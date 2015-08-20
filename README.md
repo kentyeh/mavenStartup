@@ -508,3 +508,41 @@ mvn compiler:compile
     </build>
 </project>
 ```
+其中 directory 裝是資源檔的目錄所在，filtering設為true表示裡面的檔案要替換，例如，我常用的Log4j2.xml裡的設定 
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="${project.artifactId}" verbose="false" monitorInterval="30">
+        <Appenders>
+                <Console name="console">
+                        <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level} %class{1.}.%M(%L) - %highlight{%msg}%n%ex{full}%n" />
+                </Console>
+                <RollingRandomAccessFile name="${project.artifactId}-Rolling" fileName="${sys:catalina.home}/logs/${project.artifactId}.log"
+                        filePattern="${sys:catalina.home}/logs/${project.artifactId}-%d{MM-dd-yyyy}-%i.log.gz">
+                        <PatternLayout>
+                                <pattern>%d %p [%t] %C{1.}.%M(%L) %m%n%ex{full}%n</pattern>
+                        </PatternLayout>
+                        <Policies>
+                                <TimeBasedTriggeringPolicy />
+                                <SizeBasedTriggeringPolicy size="250 MB" />
+                        </Policies>
+                </RollingRandomAccessFile>
+                <Async name="Async-${project.artifactId}-Rolling">
+                    <AppenderRef ref="${project.artifactId}-Rolling"/>
+                </Async>
+        </Appenders>
+        <Loggers>
+                <Logger name="com.spring" level="INFO" additivity="false">
+                        <AppenderRef ref="console" />
+                        <AppenderRef ref="${project.artifactId}-Rolling" />
+                </Logger>
+                <Root level="info">
+                        <AppenderRef ref="console" />
+                        <AppenderRef ref="${project.artifactId}-Rolling" />
+                </Root>
+        </Loggers>
+</Configuration>
+```
+在執行或打包時裡面的[變數](#property)(${project.artifactId})就會被置換為專案名稱。
+
+或者我們也可以把變數定義在[Profile](#profile)內，然後在執行 mvn 命令時，指定Profile，以便置換成不同的值。 
