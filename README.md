@@ -548,4 +548,35 @@ mvn compiler:compile
 或者我們也可以把變數定義在[Profile](#profile)內，然後在執行 mvn 命令時，指定Profile，以便置換成不同的值。 
 
 ##<a name="configuare"></a>組態管理
-也許您不是一個人寫程式，那麼組態管理(Software Configuration Management)就是必須的，當然也許您的系統已經裝有tortoisesxxx 這類的視覺化管理程式，如果僅僅只裝了svn或是git的client程式，Maven也提供了相關的Plugin以簡化整個管理作業 以[SubVersion](http://subversion.apache.org/)為例，我們僅僅須要一個簡單的pom.xml就可以了
+也許您不是一個人寫程式，那麼組態管理(Software Configuration Management)就是必須的，當然也許您的系統已經裝有tortoisesxxx 這類的視覺化管理程式，如果僅僅只裝了svn或是git的client程式，Maven也提供了相關的Plugin以簡化整個管理作業 以[git](https://git-scm.com/)為例，我們僅僅須要一個簡單的pom.xml就可以了
+```
+<project ...>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>您的單位或組識</groupId>
+  <artifactId>專案名稱</artifactId>
+  <version>版本</version>
+  <packaging>pom</packaging>
+  <scm>
+    <url>http://yourSvnHost:port/.../</url><!--可直接檢視Repository的網址-->
+    <connection>scm:git:git@yourSvnHost/.../</connection><!--git網址，如果是svn換成scm:svn:http://yourSvnHost:port/.../-->
+    <developerConnection>scm:git:git@yourSvnHost/.../</developerConnection><!--開發人員所用的git網址，如果是svn換成scm:svn:http://yourSvnHost:port/.../-->
+  </scm>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>1.8.1</version>
+        <!-- Checkout之後要執行的Goal -->
+        <configuration>
+          <goals>package</goals><!--給scm:bootstrap goal使用，checkout後立即執行 package goal-->
+          <connectionType>developerConnection</connectionType><!--預設是connection，這裡換成開發人員-->
+          <!--username>svn帳號</username-->
+          <!--password>svn密碼</password-->
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>  
+</project>
+```
+
