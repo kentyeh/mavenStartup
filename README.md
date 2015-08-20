@@ -207,6 +207,7 @@ mvn compiler:compile
 ```
 <finalName>${project.artifact}.war</finalName>
 ```
+
 以下是一些預設變數的列表 
 
 | ${basedir} | 表示包含pom.xml的目錄路徑 |
