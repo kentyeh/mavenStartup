@@ -35,3 +35,4 @@ mvn archetype:create -DgroupId=idv.kentyeh.software -DartifactId=firstmaven \
 
 Maven的識別管理，分為三層 groupId:artifactId:version，一個組織(group) 可能存在多個Project(atrifact)，每個Project也可能存在多個版本(version)， 整個函式庫就以這種檔檔案架構進行處理，當使用的函式不存在時，Maven會到 http://repo1.maven.org/maven2/ 或是 http://repo2.maven.org/maven2/ 進行下載，下載後存到您電腦上的函式庫 
 
+#Maven 的Project管理
