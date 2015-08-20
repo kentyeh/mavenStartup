@@ -547,7 +547,7 @@ mvn compiler:compile
 
 或者我們也可以把變數定義在[Profile](#profile)內，然後在執行 mvn 命令時，指定Profile，以便置換成不同的值。 
 
-##<a name="configuare"></a>組態管理
+#<a name="configuare"></a>組態管理
 也許您不是一個人寫程式，那麼組態管理(Software Configuration Management)就是必須的，當然也許您的系統已經裝有tortoisesxxx 這類的視覺化管理程式，如果僅僅只裝了svn或是git的client程式，Maven也提供了相關的Plugin以簡化整個管理作業 以[git](https://git-scm.com/)為例，我們僅僅須要一個簡單的pom.xml就可以了
 ```
 <project ...>
@@ -579,4 +579,120 @@ mvn compiler:compile
   </build>  
 </project>
 ```
+如此我們可以執行scm plugin相關的[goals](http://maven.apache.org/scm/maven-scm-plugin/plugin-info.html)了。 scm通常有帳號/密碼的問題，當然直接寫在pom.xml內不是不行，但這跟全世界公開有何不同? 所以我建議最好設定在x:\maven\conf\settings.xml的servers標籤下增加如下 
+```
+<servers>  
+  <server>
+    <id>yourRepoHost:port</id>
+    <username>svn帳號</username>
+    <password>svn密碼</password>
+  </server>
+  ...
+</servers>
+```
+
+執行 "mvn scm:bootstrap" 您可以發現程式不但下載，且立即執行打包作業 
+
+##<a name="conflict"></a>版本衝突管理
+maven用久了，您就會發現這個問題：比如說您的pom 同時引用了如下： 
+```
+<project ...>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>org.springframework.core</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+    <dependencies>
+</project>
+```
+雖然都是使用了3.0.5版，可是"package"後，您會發現org.springframework.core 怎麼會同時存在3.0.5與3.0.3的jar檔，這是因為spring-security-cor的dependency引用了3.0.3版的org.springframework.core，所以才會同時存在兩個版本。 要如何事先發現這個問題呢? 這時候我們需要執行另一個goal "dependency:tree"來找出dependency的引用關系， 上述的執行結果如下： 
+```
+------------------------------------------------------------------------
+Building firstmaven 1.0-SNAPSHOT
+------------------------------------------------------------------------
+
+--- maven-dependency-plugin:2.1:tree (default-cli) @ firstmaven ---
+idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
++- org.springframework:org.springframework.core:jar:3.0.5.RELEASE:compile
++- org.springframework.security:spring-security-core:jar:3.0.5.RELEASE:compile
+|  +- org.springframework:spring-expression:jar:3.0.3.RELEASE:compile
+|  +- org.springframework:spring-core:jar:3.0.3.RELEASE:compile
+|  |  +- org.springframework:spring-asm:jar:3.0.3.RELEASE:compile
+|  |  \- commons-logging:commons-logging:jar:1.1.1:compile
+|  +- org.springframework:spring-context:jar:3.0.3.RELEASE:compile
+|  |  \- org.springframework:spring-beans:jar:3.0.3.RELEASE:compile
+|  +- org.springframework:spring-tx:jar:3.0.3.RELEASE:compile
+|  |  \- aopalliance:aopalliance:jar:1.0:compile
+|  +- org.springframework:spring-aop:jar:3.0.3.RELEASE:compile
+|  +- org.aspectj:aspectjrt:jar:1.6.8:compile
+|  \- org.aspectj:aspectjweaver:jar:1.6.8:compile
+\- junit:junit:jar:3.8.1:test
+------------------------------------------------------------------------
+BUILD SUCCESS
+------------------------------------------------------------------------
+```
+所以我們當然想使用新版本，所以必須讓spring-security-core排除引用 org.springframework.core 3.0.3版，設定如下： 
+```
+<project ...>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>org.springframework.core</artifactId>
+            <version>3.0.5.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>3.0.5.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>org.springframework.core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    <dependencies>
+</project>
+```
+再執行一次"mvn dependency:tree"看看引用的library 
+```
+------------------------------------------------------------------------
+Building firstmaven 1.0-SNAPSHOT
+------------------------------------------------------------------------
+
+--- maven-dependency-plugin:2.1:tree (default-cli) @ firstmaven ---
+idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
++- org.springframework:org.springframework.core:jar:3.0.5.RELEASE:compile
++- org.springframework.security:spring-security-core:jar:3.0.5.RELEASE:compile
+|  +- org.springframework:spring-expression:jar:3.0.3.RELEASE:compile
+|  +- org.springframework:spring-core:jar:3.0.3.RELEASE:compile
+|  |  +- org.springframework:spring-asm:jar:3.0.3.RELEASE:compile
+|  |  \- commons-logging:commons-logging:jar:1.1.1:compile
+|  +- org.springframework:spring-context:jar:3.0.3.RELEASE:compile
+|  |  \- org.springframework:spring-beans:jar:3.0.3.RELEASE:compile
+|  +- org.springframework:spring-tx:jar:3.0.3.RELEASE:compile
+|  |  \- aopalliance:aopalliance:jar:1.0:compile
+|  +- org.springframework:spring-aop:jar:3.0.3.RELEASE:compile
+|  +- org.aspectj:aspectjrt:jar:1.6.8:compile
+|  \- org.aspectj:aspectjweaver:jar:1.6.8:compile
+\- junit:junit:jar:3.8.1:test
+------------------------------------------------------------------------
+```
+
+顯然， org.springframework.core的版本問題解決了，當然裡面還是有幾個3.0.3，如果要全面換用3.0.5版，只要引用新的3.0.5版的dependency，然後在 spring-security-core的 exclusions 裡把那些3.0.3版的排除掉即可。 
+
+##<a name="versionCheck"></a>最新版本檢查
+
+有時後在程式發佈前，想看看是否有更新的版本存在，可以執行
+
+    "mvn versions:display-dependency-updates" 檢查使用的函式庫有那些更新的版本 
+
+    "mvn versions:display-plugin-updates" 檢查使用的Plugin有那些更新的版本 
+
 
