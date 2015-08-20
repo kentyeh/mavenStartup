@@ -35,7 +35,7 @@ mvn archetype:create -DgroupId=idv.kentyeh.software -DartifactId=firstmaven \
 
 Maven的識別管理，分為三層 groupId:artifactId:version，一個組織(group) 可能存在多個Project(atrifact)，每個Project也可能存在多個版本(version)， 整個函式庫就以這種檔檔案架構進行處理，當使用的函式不存在時，Maven會到 http://repo1.maven.org/maven2/ 或是 http://repo2.maven.org/maven2/ 進行下載，下載後存到您電腦上的函式庫 
 
-#Maven 的Project管理
+#<a name="projectMangement"></a>Maven 的Project管理
 Maven的管理設定主要靠Pom.xml進行，打開剛才建立的Project設定檔，內容說明如下： 
 ```<project xmlns="http://maven.apache.org/POM/4.0.0" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -91,7 +91,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 
 至於commons-loggin是否須要使用到其它的Library，根本完全不用在意，因為Maven會自動導入相關的Library 
 
-#Project目錄架構
+#<a name="archetype"></a>Project目錄架構
 
 以建立web程式來說，其目錄架構說明如下：
 
@@ -124,7 +124,7 @@ Project目錄
 └target[各種處理後產生的資料，包含最終生的的打包標的]
 ```
 
-#Maven 引用第三方函式庫
+#<a href="thirdParty"></a>Maven 引用第三方函式庫
 
 [之前](#identity)有說過，Maven有專門存放函式的repository (檔案庫)， 但是[ASF](http://www.apache.org/)再厲害，也不可能搜羅所有Library，所以必要的時候，我們必須引用第三方的函式檔案庫， 以下為可能會用到的來源(加入到Pom.xml)：
 ```
@@ -135,4 +135,66 @@ Project目錄
         <url>http://download.java.net/maven/2</url>
     </repository>
 </repositories>
+```
+
+#Maven Plugin
+
+一開始的時候，我們執行 "mvn archetype:generate" 建立Project，mvn 後面接的指令 叫 goal由 "前置字:識別字" 表示要執行的作業。這些執業作業(命令)是由所謂的 plugin所提供，plugin是一種專供 Maven本身使用的Library，同一個plugin通常使用同一前置字，然後本身會帶有說明提供那些作業的自我解說檔(metadata)， 通常這個自我解說檔，也會定義每種作業隸屬於那種[phase](#phase)(作業階段)；Maven本身[早已知道](http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Built-in_Lifecycle_Bindings)許許多多的goal的定義，當Maven執行特定的 goal時，缺少的Plugin，Maven就會自動去Repository下載相關的檔案。 
+
+Maven 的指令可以串接，例如以下指令 
+
+```
+mvn clean package javadoc:javadoc exec:exec
+```
+表示，先刪除 target 目錄後再行打包Project，然後產生文件，再執行專案(需要額外設定)。
+
+上述的 clean、package(打包）都很容易理解，可是為何又出現了 javadoc:javadoc、exec:exec 這樣的表示， 這是因為Plugin是Maven裡面的一種特殊專案，她裡面存在一些task，當這些Plugin被包含進專案的pom.xml時， 例如要執行maven-javadoc-plugin這個Plugin的javadoc task時，完整的命令下法應該是 
+```
+mvn org.apache.maven.plugins:maven-javadoc-plugin:2.10.1:javadoc
+```
+但是因為在的Jar的Metadata中已經標注了它的prefix，在Maven執行時，會去讀取每個plugin java的metadata， 而maven-javadoc-plugin的metadata標記為javadoc，所以才省略為 javadoc:javadoc，
+
+至於前面的clean package 等則是[maven lifecycle](#phase)的一部分，會綁定特定的Plugin，然後執行 該Plugin的task。
+
+plugin的定義結構通常如下 :
+```
+<project ...>
+    ...
+    <build>
+        <plugins>
+            <!--可定義多個plugin-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId><!--若是此值，則可省略-->
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                ...各種設定
+                </configuration>
+            </plugin>
+        <plugins>
+        <finalName>firstmvn</finalName>
+        ...
+    <build>
+    ...
+</project>
+```
+
+#<a name="property"></a>Project變數
+
+我們建立的第一個 Project 的 [pom.xml](#projectMangement)檔案內有一個<properties>段落，可以讓我們定義一些變數， 例如Spring 通常含有多種Library，其引用版本應該一致，所以我通常會定義一個變數 
+
+```
+<org.springframework.version>4.2.0.RELEASE</org.springframework.version>
+```
+
+然後，定義版本別的地方會寫成 
+
+```
+<version>${org.springframework.version}</version>
+```
+
+以後當版本變更的時候，只要修改&lt;properties&gt;下的&lt;org.springframework.version&gt;4.2.0.RELEASE&lt;/org.springframework.version&gt;，就可以引用新的版本。 初建立時的pom.xml內已經有一個變數 
+
+```
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 ```
