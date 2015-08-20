@@ -546,3 +546,6 @@ mvn compiler:compile
 在執行或打包時裡面的[變數](#property)(${project.artifactId})就會被置換為專案名稱。
 
 或者我們也可以把變數定義在[Profile](#profile)內，然後在執行 mvn 命令時，指定Profile，以便置換成不同的值。 
+
+##<a name="configuare"></a>組態管理
+也許您不是一個人寫程式，那麼組態管理(Software Configuration Management)就是必須的，當然也許您的系統已經裝有tortoisesxxx 這類的視覺化管理程式，如果僅僅只裝了svn或是git的client程式，Maven也提供了相關的Plugin以簡化整個管理作業 以[SubVersion](http://subversion.apache.org/)為例，我們僅僅須要一個簡單的pom.xml就可以了
