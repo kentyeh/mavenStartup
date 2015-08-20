@@ -248,7 +248,7 @@ mvn compiler:compile
 | mvn versions:display-plugin-updates | 檢查Plugin的更新狀況 |
 
 #<a name="comonConfig"></a>常用的plugin build設定
-##Compile的設定
+##<a name="compile"></a>Compile的設定
 
 ```
 <project ...>
@@ -265,6 +265,246 @@ mvn compiler:compile
                 </configuration>
             </plugin>
         </plugins>
+    </build>
+</project>
+```
+
+##<a name="testng"></a>TestNG設定
+因為我不用JUnit，所以我會設定TestNG 
+
+```
+<project ...>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.16</version>
+                <configuration>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>${basedir}/src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+                </plugin>
+        </plugins>
+    </build>
+</project>
+```
+##<a name="attachSource"></a>打包時包含源碼
+像GWT用於Client Side Code的Liberary，明確要求要把源碼包入jar檔內，所以要把Source Code與gwt.xml一起包到jar檔內
+
+```
+<project ...>
+    <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/java</directory><!--資源檔存放路徑-->
+                <filtering>false</filtering><!--不置換資源檔內容,如果要的話見http://maven.apache.org/plugins/maven-resources-plugin/examples/filter.html-->
+                <includes>
+                    <include>org/gwtwidgets/Stream.gwt.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/java</directory>
+                <includes>
+                    <include> **/client/*.java </include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>
+```
+##<a name="executableJar"></a>建立可執行Jar
+```
+<project ...>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>完整類別名稱(有main方法的class)</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+##<a name="singleExecutableJar"></a>建立單一可執行Jar(把所有Library一起打成一包)
+```
+<project ...>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>完整類別名稱(有main方法的class)</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+##<a name="runDirect"></a>直接執行程式
+```
+<project ...>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-classpath</argument>
+                        <classpath /> 
+                        <argument>完整類別名稱(有main方法的class)</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+
+設定好後便可以以 "mvn exec:exec"執行程式 
+##<a name="goalBinding"></a>設定goal關聯到phase
+
+[上述](#runDirect)直接執行程式的前題是，必須是在源碼已經編譯完成的情形下，如果源碼未經compile，則會因為沒有可執行的class而發生錯誤。 當然您也可以執行 "mvn compile exec:exec"來解決這個問題，而另外一種方式就是載 exec:exec 關聯到 test 這個 phase， 所以當我們執行 "mvn test" 時，就會先進行 compile然後再執行 "exec:exec"設定如下 
+```
+<project ...>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution><!--設定Goal的執行方式-->
+                        <phase>test</phase><!--將以下Goals關聯到 test Phase-->
+                        <goals>
+                            <goal>exec</goal> <!--要設定的goal-->
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-classpath</argument>
+                        <classpath /> 
+                        <argument>完整類別名稱(有main方法的class)</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+
+##<a name="singleExecutableJar2"></a>建立單一可執行Jar
+[之前](#singleExecutableJar)建立單一可執行Jar，並不會把Jar裡面的META-INF一起包進去，可是像Spring的把Schma等相關資料都放在META-INFO內， 所以必須使用其它的plugin一起將這些資料包進去，並設定關聯到"package" phase 
+```
+<project ...>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>完整類別名稱</mainClass>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.handlers</resource>
+                                </transformer>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/spring.schemas</resource>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+
+##<a name="systemProperty"></a>系統變數的問題
+當我們開發Web程式的常常會碰的一個問題是，例如Tomcat有一個預設的系統變數${catalina.home}可指到Tomcat所在的目錄(Jboss則是${project.build.directory})， 所以我們可以在log4j.xml或是logback.xml內直接將appender log file輸出到 ${catalina.home}/log/myweb.log (或是${project.build.directory}/logs/myweb.log)， 但是當我們進行單元測試時，開發環境下根本不認識這兩個變數，所以我們必須設定這兩個變數並且將之指到某個特定的目錄下。
+```
+<project ...>
+    <build>
+        <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId><!--因為是測試時發生，所以設定這個Plugin-->
+              <version>2.16</version>
+              <configuration>
+                <systemProperties>
+                  <property>
+                    <name>catalina.home</name><!--要設定系統變數名稱-->
+                    <value>${project.build.directory}</value><!--把這個變數指到輸出目錄-->
+                  </property>
+                  <property>
+                    <name>jboss.server.home.dir</name><!--要設定系統變數名稱-->
+                    <value>${project.build.directory}</value><!--把這個變數指到輸出目錄-->
+                  </property>
+                </systemProperties>
+                <suiteXmlFiles>
+                    <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile><!--因為我是用testNG，所以指定testNG的設定檔-->
+                </suiteXmlFiles>
+              </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+##<a name="resourceFilter"></a>資源檔的變數替代
+系統中常常必須要使用一些設定檔例如 .properties 或是 .xml結尾的檔案，常常我們會把一些設定放進裡面，例如資料庫的connection string， 以便在開發時期使用測試的資料庫而執行時期使用正式的資料庫，或者是某些暫存檔，例如除錯版本時將某些檔案放在本機路徑，而發佈版本時 則指定到主機路徑。
+
+這個需求表示我們須要能夠在設定檔中放入一些[變數](#property)，而這些[變數](#property)的值要能夠在外部(如執行時的參數或是設定在pom.xml內)決定其值， 一個最簡單而通用的設定如下，預設會把.properties與.xml檔案內的[變數](#property)替換為真正的值)：
+
+```
+<project ...>
+    <build>
+        <resources>
+        <resource>
+            <directory>${basedir}/src/main/resources</directory>
+            <filtering>true</filtering>
+        </resource>
+        </resources>
+        <testResources>
+        <testResource>
+            <directory>${basedir}/src/test/resources</directory>
+            <filtering>true</filtering> 
+        </testResource>
+        </testResources>
     </build>
 </project>
 ```
