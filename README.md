@@ -193,8 +193,78 @@ plugin的定義結構通常如下 :
 <version>${org.springframework.version}</version>
 ```
 
-以後當版本變更的時候，只要修改&lt;properties&gt;下的&lt;org.springframework.version&gt;4.2.0.RELEASE&lt;/org.springframework.version&gt;，就可以引用新的版本。 初建立時的pom.xml內已經有一個變數 
+以後當版本變更的時候，只要修改&lt;properties&gt;下的&lt;org.springframework.version&gt;4.2.0.RELEASE&lt;/org.springframework.version&gt;，就可以引用新的版本。 初建立時的[pom.xm](#projectMangement)l內已經有一個變數 
 
 ```
 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+```
+為什麼沒有看到在那裡引用呢? 其實，前面已經提過，Maven的所有作業都是靠許多的Plugin來達成，雖然在這個[pom.xml](#projectMangement)內沒有看到引用任何Plugin， 但當我們執行 "mvn compile"的時候，因為Maven已經內定很多指令所使用的Plugin，所以實際上該命令會去執行 
+
+```
+mvn compiler:compile
+```
+而[compiler Plugin](http://maven.apache.org/plugins/maven-compiler-plugin/)，encoding會預設參考[${project.build.sourceEncoding}](http://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#encoding)這個變數， 所以我們在pom.xml的<properties>指定這個變數的值為"UTF-8"，所以在編譯程式時，編譯器就會知道程式使用的編碼。 [這邊](http://docs.codehaus.org/display/MAVENUSER/MavenPropertiesGuide)有列出一些預設的[變數](http://books.sonatype.com/mvnref-book/reference/resource-filtering-sect-properties.html)，可以參考使用。 最後一提的是build內可放一個finalName，一般來說打包的最後檔名為artifactId-version.war(jar,ear)，一般來說，web檔deploy時總希望固定一個名字，使用finalName與一些變數就可以將打包檔的名稱固定住， 例如，我們打包的名字不要有版本資料便可設定如下 
+```
+<finalName>${project.artifact}.war</finalName>
+```
+以下是一些預設變數的列表 
+
+| ${basedir} | 表示包含pom.xml的目錄路徑 |
+| -- | -- |
+| ${version} | 等同${project.version}或${pom.version}，即程式的版本編號(maven通常建議不要直接使用${version}) |
+| ${project.build.directory} | 就是target目錄，等同${pom.project.build.directory} |
+| ${project.build.outputDirectory} | 就是target/classes目錄 |
+| ${project.name} 或 ${pom.name} | 就是pom.xml '<name'>所指定的名稱 |
+| ${project.build.finalName} | Project的打包名稱 |
+| ${env.M2_HOME} | maven安裝目錄 |
+| ${java.home} | Java安裝目錄 |
+| ${java的系統變數} | 與其它JVM所定義的變數 |
+
+
+#<a name="phase"></a>Maven pahse
+
+之前說過goal可是設定屬於某個phase，而phase則可組成[lifecycle](http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference)(生命週期)，在Maven有三個LifeCycle?，分別是 clean 、 default 與 site ， clean周期負責Project的清理，default周期負責Project的建置而site周期則是負責產生Project的文檔。 例如執行 "mvn package" 時，因為它是屬於 defulat 這個life cycle，所以從 phase validate 到 package 的所有相關的Goals都會被執行
+
+    Plugin可以設定它的goal屬於某個phase，所以有可能造成某個pahse下並不存在任何可以執行的goal。 
+
+例如 "mvn package"這個Goals，由[內定的Goal](http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Built-in_Lifecycle_Bindings)可以知道， 它可能會執行Goal "mvn jar:jar" 、 "mvn ejb:ejb" 或是 "mvn ejb3:ejb3"(端看您的專案引用了那些Plugin，預設是"jar:jar")， 而 "package"這個Goal是屬於 "package" 這個Phase，所以如 ... "compile"..."test"這些Phase下的Goal(如 compile、test-compile、test...)會先被執行完成後， 才會輪到 "package"這個Goal，一旦之前某個goals執行失敗就會停止，必須等到所有的goals都沒有問題才可完成打包作業。
+
+以下列舉一些常用的指令(goals) 
+
+| mvn clean | 進行清理作業，通常是將${project.build.directory} 砍掉 |
+| -- | -- |
+| mvn compile | 編譯程式 |
+| mvn test | 測試程式 |
+| mvn package | 打包程式 |
+| mvn install | 把Project打包後，放進本地repository |
+| mvn source:jar javadoc:jar install | 把源碼打包，產生文件並打包連同打包的Project一起放進本地repository，把source與文件放進repository，是為了讓IDE工具方件Debug與查看Java Api |
+| mvn jetty:run或是 mvn tomcat:run | 如果是webProject，直接上起來執行 |
+| mvn source:jar | 把source打包成一個jar檔 |
+| mvn javadoc:javadoc | 產生java api檔案 |
+| mvn javadoc:jar | 產生java api打包檔案 |
+| mvn exec:exec | 執行Project(需進行一些[設定]) |
+| mvn versions:display-dependency-updates | 檢查相依函式庫的版本更新狀況 |
+| mvn versions:use-latest-releases | 直接將pom.xml內的版本更新到最近一版釋出(會備分舊版的pom.xml) |
+| mvn versions:display-plugin-updates | 檢查Plugin的更新狀況 |
+
+#<a name="comonConfig"></a>常用的plugin build設定
+##Compile的設定
+
+```
+<project ...>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
 ```
