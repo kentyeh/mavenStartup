@@ -1031,3 +1031,277 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 現在我們可以用指令 mvn cobertura:cobertura 來產生報表，這個指令必然引發程式進行test，為啥?因為它不就是在檢查"測試"覆蓋率，它必須由測試中產生一些額外的資訊。 上述的設定，我設定了在pre-site這個階段時，要去執行cobertura這個goal，主要的原因是mvn site產生整合報表時，只會加入之前產生的 cobertura報表，而不會再次執行測試而產生報表，所以我要在執行site前去執行它。 
 
+#<a name="optimize"></a>WEB靜態資源最佳化
+
+最近想到寫個plugin把要使用的JavaScript用[http://code.google.com/p/closure-compiler/ Google Closure]加壓後再打包，寫了寫才發現原來已經有人
+早就想到了，[http://code.google.com/p/wro4j wro4j]認為在HTTP下載一個大檔案的效率，遠比下載兩個分割檔案，所以[http://code.google.com/p/wro4j wro4j]
+最主要的功用就是把所有用到的css或者是js檔案(無論是本地或是遠端)打成一包，以供一次性下載。
+  
+它的作法分兩種，一種是即時(Runtime)將用到的檔案進行合併壓縮，另一種就是事先把資源檔緊實化，然後放入打包檔後一起發佈。
+  
+我要介紹的是後者。首先引入Plugin設定
+```
+  <build>
+      <plugins>
+          <plugin>
+            <groupId>ro.isdc.wro4j</groupId>
+            <artifactId>wro4j-maven-plugin</artifactId>
+            <version>${wro4j.version}</version>
+            <executions>
+                <execution>
+                    <phase>compile</phase><!--可省略，預設就是在compile階段執行-->
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <targetGroups>all</targetGroups>
+                <minimize>true</minimize>
+                <contextFolder>${basedir}/src/main/webapp/</contextFolder>
+                <destinationFolder>${basedir}/src/main/webapp/wro/</destinationFolder>
+                <!--使用Google Closure Compile處理JavaScript-->
+                <wroManagerFactory>ro.isdc.wro.extensions.manager.standalone.GoogleStandaloneManagerFactory</wroManagerFactory>
+            </configuration>
+          </plugin>
+```
+
+然後在WEB-INF/下建立一個[http://code.google.com/p/wro4j/wiki/WroFileFormat wro.xml]如下：
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="http://www.isdc.ro/wro"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.isdc.ro/wro wro.xsd">
+  <group name='all'>
+    <!--指定的JQuery已經是緊實化了，所以設定 minimize="false"以節省處理時間-->
+    <js minimize="false">http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js</js>
+    <js>/js/main.js</js>
+    <css>/css/screen.css</css>
+  </group>
+  <group name='dev'>
+    <js minimize="false">http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js</js>
+    <js>/js/main-dev.js</js>
+    <css>/css/screen.css</css>
+  </group>
+</groups>
+```
+
+上述路徑的[http://code.google.com/p/wro4j/wiki/WroFileFormat 寫法]方式如下
+
+| 以/開頭如 /js/main.js | 表示為Servlet Context路徑 |
+| ------------- | ------------- |
+| 以classpath:開頭如classpath:com/google/js/main.js | 表示javaScript或是css存在於classpath內 |
+| 以file:開頭如file:c:\js\**.css | 表示javaScript或是css存在於檔案系統內 |
+| 外部url | 例如http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js |
+  
+路徑也可包含萬用字元
+
+|`*` | 單一路徑元素，如`*.css`表示該路徑內(不含子路徑)的所有css檔案|
+| ------------- | ------------- |
+| `**` | 多重路徑元素，如`c:\js\**.css`表示c:\js\下(含子路徑)所有的css檔案 |
+| ? | 表示任何單一字視，如/usr/javaScript/mobile?.css，可能為 mobile1.css或是mobileA.css... |
+
+最後則是引用
+
+```
+<html>
+<head>
+  <title>Web Frameworks Comparison</title>
+  <link rel="stylesheet" type="text/css" href="wro/all.css" />
+  <script type="text/javascript" src="wro/all.js"></script>
+</head>
+  <body>
+  //Body
+  </body>
+</html>
+```
+這裡要說明的是plugin的參數設定
+  
+| targetGroups | 在此指定了all，所以只會處理group name='all'的設定，若不指定則會處理所有的group，<br/>也就是除了all.css,all.js外還會產生dev.css與dev.js |
+| ------------- | ------------- |
+| minimize | 預設值為true，若是在開發階段時，可設為false，方便利用firebug或是chrome的開發工具進行除錯 |
+| contextFolder | 指定web程式的所在 |
+| destinationFolder | 指定緊實化的產出目的目錄 |
+
+註：在pom.xml內將wro4j的憂行phase設在compile階段，我比較不建議這樣做，理由是因為幾乎做什麼每一次都會重新產生，
+而每次重新產生的時間都有點久，所以我建議改成pre-package階段再產生，
+但是執行mvn jetty:run時卻又要參考到，這時請手動執行
+mvn wro4j:run 產生即可，若是有變動的話，再執行一次重新產生即可。
+
+#<a name="siteReport"></a>Site Report
+顧名思義，就是用產生整個專案的報表，上面我設定了很多&lt;reporting&gt;的tag，用來設定產生報表的相關設定。<br/>
+實際上，mvn site在site階段執行的是mvn site:site這個goal，而這個plugin就是[http://maven.apache.org/plugins/maven-site-plugin/ maven-site-plugin]，
+因為這個plugin的設定比較煩，所以&lt;reporting&gt;的目的就是為了簡化這個plugin的設定而出現的。如果您仔細看過maven執行的訊息，會發現使用&lt;reporting&gt;
+這個tag時，maven一直出現&lt;reporting&gt;已經過時的訊息，也是就maven要您最好直接設定maven-site-plugin, 而不要再使用&lt;reporting&gt;了。<br/>
+(mvn site與mvn site:site有何不同?mvn site:site只是執行plugin的單一goal,而mvn site所執行的是整個LifeCycle(會執行每個phase相關的goals，千萬不要搞錯了))
+  
+以下是我通常用的設定方式
+
+```
+<project>
+    ...
+    <build>
+        <plugins>
+            <!--Site Report Configuration,報表管理-->
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.maven.doxia</groupId>
+                        <artifactId>doxia-module-markdown</artifactId>
+                        <version>1.6</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <!--Uncomment if jdk 7+-->
+                    <!--argLine>-XX:-UseSplitVerifier</argLine-->
+                    <locales>zh_TW</locales>
+                    <reportPlugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-project-info-reports-plugin</artifactId>
+                            <version>2.8</version>
+                            <configuration>
+                                <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+                            </configuration>
+                            <reportSets>
+                                <reportSet>
+                                    <reports>
+                                        <report>index</report>
+                                        <report>plugin-management</report><!--專案外掛程式管理 (Project Plugin Management)-->
+                                        <!--report>distribution-management</report>  發佈管理-->
+                                        <report>scm</report><!--原始碼貯藏庫 (Source Repository)-->
+                                        <!--report>mailing-list</report>  專案郵件列表 (Project Mailing Lists)-->
+                                        <!--report>issue-tracking</report> 問題追蹤 (Issue Tracking)-->
+                                        <!--report>cim</report>  持續整合 (Continuous Integration)-->
+                                        <report>plugins</report><!--專案建構外掛程式 (Project Build Plugins)-->
+                                        <report>license</report><!--專案授權許可 (Project License)-->
+                                        <report>project-team</report><!--團隊 (The Team)-->
+                                        <report>summary</report><!--專案摘要 (Project Summary)-->
+                                        <report>dependencies</report> <!--專案依賴 (Project Dependencies)-->
+                                        <report>dependency-management</report>
+                                        <report>modules</report>
+                                    </reports>
+                                </reportSet>
+                            </reportSets>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>2.10.3</version>
+                            <configuration>
+                                <aggregate>true</aggregate>
+                                <minmemory>128m</minmemory>
+                                <maxmemory>512</maxmemory>
+                                <breakiterator>true</breakiterator>
+                                <failOnError>false</failOnError>
+                                <quiet>true</quiet>
+                                <source>${maven.compiler.source}</source>
+                                <verbose>false</verbose>
+                                <linksource>true</linksource>
+                                <links>
+                                    <link>http://docs.oracle.com/javase/8/docs/api/</link>
+                                    <link>http://docs.oracle.com/javaee/7/api/</link>
+                                    <link>http://docs.spring.io/spring/docs/current/javadoc-api/</link>
+                                    <link>http://docs.spring.io/spring-security/site/docs/current/apidocs/</link>
+                                    <link>http://docs.spring.io/spring-mobile/docs/current/api/</link>
+                                    <link>http://docs.jboss.org/hibernate/stable/core/javadocs/</link>
+                                    <link>http://logging.apache.org/log4j/2.x/log4j-api/apidocs/</link>
+                                    <link>http://logging.apache.org/log4j/2.x/log4j-core/apidocs/</link>
+                                    <link>http://jdbi.org/apidocs/</link>
+                                </links>
+                            </configuration>
+                            <reportSets>
+                                <reportSet>
+                                    <id>javadoc</id>
+                                    <reports>
+                                        <report>javadoc</report>
+                                        <!--report>test-javadoc</report-->
+                                    </reports>
+                                </reportSet>
+                            </reportSets>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-jxr-plugin</artifactId>
+                            <version>2.5</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-pmd-plugin</artifactId>
+                            <version>3.5</version>
+                            <configuration>
+                                <failOnViolation>false</failOnViolation>
+                                <linkXref>true</linkXref>
+                                <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+                                <minimumTokens>100</minimumTokens><!--minimun token duplicated think as source duplicated-->
+                                <targetJdk>${maven.compiler.target}</targetJdk>
+                                <verbose>true</verbose>
+                            </configuration> 
+                        </plugin>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>findbugs-maven-plugin</artifactId>
+                            <version>3.0.2</version>
+                            <configuration>
+                                <failOnError>false</failOnError>
+                                <xmlOutputDirectory>${project.build.directory}/site</xmlOutputDirectory>
+                                <effort>Max</effort><!--Detect Level:Min,Default or Max-->
+                                <xmlOutput>true</xmlOutput>
+                                <fork>${findbugs.fork}</fork>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-report-plugin</artifactId>
+                            <version>2.18.1</version>
+                            <reportSets>
+                                <reportSet>
+                                    <id>integration-tests</id>
+                                    <reports>
+                                        <!--Alternatives ，二選一
+                                            report: invoke test ，會引發測試
+                                            report-only: invoke test ，不會引發測試，但是之前必須經過測試
+                                        -->
+                                        <!--<report>report</report>--> 
+                                        <report>report-only</report>
+                                        <report>failsafe-report-only</report>
+                                    </reports>
+                                </reportSet>
+                            </reportSets>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>cobertura-maven-plugin</artifactId>
+                            <version>2.6</version>
+                        </plugin>
+                    </reportPlugins>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+```
+  上述的設定需要在專案中包含一些報表文件模版，建議您使用以下指定產生一個示範專案(Spring)，然後參考site目錄下的模版範例
+
+```
+  mvn archetype:generate -DarchetypeRepository=http://gwtrepo.googlecode.com/svn/repo \
+        -DarchetypeGroupId=com.google.code \
+        -DarchetypeArtifactId=SpringWebStart \
+        -DarchetypeVersion=0.1.5
+```
+
+#<a name="performance"></a>執行效率
+Maven 3 可以使用[[https://cwiki.apache.org/confluence/display/MAVEN/Parallel+builds+in+Maven+3 平行處理]方式加速整個執行效率，例如
+
+```
+mvn -T 4 clean install # 以4個執行緒建置
+mvn -T 1C clean install # 每一CPU核心以1個執行緒建置
+mvn -T 1.5C clean install # 每一CPU核心以1.5個執行緒建置
+```
+
+一般來說可提升20-50%的效率, 唯一要考量的是Plugin是否執行緒安全，
+所幸絕大部分都是執行緒安全，我的建議是以 -T 1C 的參數是比較合適。
