@@ -1295,7 +1295,8 @@ mvn wro4j:run 產生即可，若是有變動的話，再執行一次重新產生
 ```
 
 #<a name="performance"></a>執行效率
-Maven 3 可以使用[[https://cwiki.apache.org/confluence/display/MAVEN/Parallel+builds+in+Maven+3 平行處理]方式加速整個執行效率，例如
+
+Maven 3 可以使用[平行處理](https://cwiki.apache.org/confluence/display/MAVEN/Parallel+builds+in+Maven+3)方式加速整個執行效率，例如
 
 ```
 mvn -T 4 clean install # 以4個執行緒建置
