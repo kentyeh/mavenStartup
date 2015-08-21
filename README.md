@@ -865,12 +865,12 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 這裡有四個Plugin要加以說明， 
 
-
-| keytool-plugin | 為Tomcat 與 Jetty Plugin在執行的時候產生簽章，以啟用SSL(https) |
+| [keytool-plugin](http://mojo.codehaus.org/keytool/keytool-maven-plugin) | 為Tomcat 與 Jetty Plugin在執行的時候產生簽章，以啟用SSL(https) |
 | ------------- | ------------- |
-| surefire-plugin | 負責單元測試 |
-| failsafe-plugin | 負責整合測試 |
-| selenium-plugin | 測試執行瀏覽器功能之正確性 |
+| [surefire-plugin](http://maven.apache.org/plugins/maven-surefire-plugin) | 負責單元測試 |
+| [failsafe-plugin](http://maven.apache.org/plugins/maven-failsafe-plugin) | 負責整合測試 |
+| [selenium-plugin](http://mojo.codehaus.org/selenium-maven-plugin) | 測試執行瀏覽器功能之正確性 |
+
 
 
 您可以從程式看到，我將testNG的設定檔分為二個，testng-unit.xml與testng-integration.xml，其實不用設定檔也可以，但是缺點就是單元測試會執行每一支測試程式;當然，若您的專案內只有單元測試的情況下，不會有問題，缺點也就是在大專案執行所有的單元測試，非常耗時，而設定檔讓我可以在某些時候只專注於測試某項功能。 
@@ -899,10 +899,76 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 好了，現在可以使用 mvn pmd:check 進行檢測或是用 mvn pmd:cpd-check檢測重覆的源碼了.
 
-| pmd:check | 檢查源碼內可能違反PMD預設的規則 |
+| [pmd:check](http://maven.apache.org/plugins/maven-pmd-plugin/check-mojo.html) | 檢查源碼內可能違反PMD預設的規則 |
 | ------------- | ------------- |
-| pmd:cpd-check | 檢查源碼內重覆的部分 |
+| [pmd:cpd-check](http://maven.apache.org/plugins/maven-pmd-plugin/cpd-check-mojo.html) | 檢查源碼內重覆的部分 |
 
 或者以 mvn verify 在最後完成階段再進行兩個Goals的檢測。
 
 也許有人會問，因為PDM是直接檢查源碼，那個我是否可以在compile時順便檢查(在&lt;executions&gt;置入&lt;phase&gt;compile&lt;/phase&gt;)， 當然可以，不過我之前也說了，PMD檢測出問題點不代表源碼無法通選測試與發佈，若在compile階段檢源碼的品質，有可能會因為不符合 PMD的檢測而導致後面的步驟(如test,package)做不下去(除非加入設定&lt;failOnViolation&gt;false&lt;/failOnViolation&gt;)，這也是何要單獨執行goal或是在 verfiy階段才來作檢測的原因 
+
+##<a name="findBugs"></a>FindBugs
+
+
+[FindBugs](http://findbugs.sourceforge.net/)檢測的標的不是源碼，而是binary code.(所以一定要先打包好專案)
+
+而且它檢測的項目也與[PMD](http://pmd.sourceforge.net/)不大相同。也由於此特性，所以不同於其它Plugin，可以一條龍的方式看到最後的報告。
+
+它的核心主要是[check](http://mojo.codehaus.org/findbugs-maven-plugin/check-mojo.html) goal. 同樣的若是串接maven 指令，到了 [check](http://mojo.codehaus.org/findbugs-maven-plugin/check-mojo.html)檢測出缺點時，一樣會中段後面的執行。
+
+首先我們先加入該[plugin](http://mojo.codehaus.org/findbugs-maven-plugin/).
+
+```
+<project>
+  ...    
+  <build>
+        <plugins>         
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.5.2</version>  
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>   
+                <configuration>
+                    <effort>Max</effort><!--檢測的程度，值可為Min、Default或是Max-->
+                    <xmlOutput>true</xmlOutput>
+                </configuration>
+            </plugin>
+        </plugins>
+  </build>     
+<project>
+```
+現在我們可以用指令 mvn verify 或是 mvn package findbugs:check產生檢測的xml結果輸出。
+
+是的，當檢測出缺點時，我們可以用指令 mvn findbugs:gui 以視覺化方式查看 xml 的輸出。 
+
+![](findbugsgui.png)
+
+或者我們在<reporting>段落內加入 
+
+```
+<project>
+  ...
+  <reporting>
+        <plugins>
+            <plugin><!--整合FindBugs報表-->
+               <groupId>org.codehaus.mojo</groupId>
+               <artifactId>dashboard-maven-plugin</artifactId>
+               <version>1.0.0-beta-1</version>
+            </plugin>
+            <plugin><!--FindBugs產生報表-->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.5.2</version>
+            </plugin>
+        </plugins>
+  </reporting>
+<project>
+```
+然後以 mvn site 產生整體報表時，並將FindBus?的xml檔案轉成Html報表(不建畢這重方法，另外方鄉請參考[springJdbiArch](https://github.com/kentyeh/springJdbiArch))
+
