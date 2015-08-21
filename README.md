@@ -796,4 +796,4 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 因為大部分的人不會用到這個需求，所以省略
 
 #<a name="testing"></a>測試與整合測試
-
+[這是](https://github.com/kentyeh/captiveWeb)我事先寫好的一個[Captive_portal](http://en.wikipedia.org/wiki/Captive_portal)範例，是以Spring與[testNG](http://testng.org/)為範例，主要的功能是為了某些商店提供免費的Wifi時，希望客戶只能上我們公司的網頁(也就是任何非本公司的網址都只回應本公司的首頁)，所以這個程式自帶了一個[造假](http://dnspentest.sourceforge.net/)的DNS，所以wifi熱點的DNS設定必須指到這個Web程式的執行網址。 
