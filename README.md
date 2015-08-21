@@ -846,3 +846,63 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 #<a name="testing"></a>測試與整合測試
 
 [這是](https://github.com/kentyeh/captiveWeb)我事先寫好的一個[Captive_portal](http://en.wikipedia.org/wiki/Captive_portal)範例，是以Spring與[testNG](http://testng.org/)為範例，主要的功能是為了某些商店提供免費的Wifi時，希望客戶只能上我們公司的網頁(也就是任何非本公司的網址都只回應本公司的首頁)，所以這個程式自帶了一個[造假](http://dnspentest.sourceforge.net/)的DNS，所以wifi熱點的DNS設定必須指到這個Web程式的執行網址。 
+
+這個範例程式除了首頁外，只提供了一個echo的網頁功能，所以我假定單元測試(測試功能性)的標的有兩個 
+
+| DNS功能測試  | 測試在同時多個人密集解析網址的時候，會不會出錯  |
+| ------------- | ------------- |
+| Echo功能測試  | 選擇範本的版本，會列出一些範本可用的版本，其差異是就不用版本的範本可能會建立有不同的資源檔(比如可能附帶圖檔) |
+ 
+另外一個必須要測試的是，我隨便在瀏覽器上鍵入一個不存在的網址，是否會出現我預設的首頁?這似乎必須使用瀏覽器才能做到，所以放入整合測試 
+
+這個專案有三支測試程式，說明如下： 
+
+
+| TestDns?.java | 單元測試：以多執行緒測試解析DNS |
+| ------------- | ------------- |
+| TestWeb?.java | 單元測試：測試WEB功能的正確性 |
+| TestBrowser?.java | 整合測試：測試錯誤網址是否會出現首頁 |
+
+這裡有四個Plugin要加以說明， 
+
+
+| keytool-plugin | 為Tomcat 與 Jetty Plugin在執行的時候產生簽章，以啟用SSL(https) |
+| ------------- | ------------- |
+| surefire-plugin | 負責單元測試 |
+| failsafe-plugin | 負責整合測試 |
+| selenium-plugin | 測試執行瀏覽器功能之正確性 |
+
+
+您可以從程式看到，我將testNG的設定檔分為二個，testng-unit.xml與testng-integration.xml，其實不用設定檔也可以，但是缺點就是單元測試會執行每一支測試程式;當然，若您的專案內只有單元測試的情況下，不會有問題，缺點也就是在大專案執行所有的單元測試，非常耗時，而設定檔讓我可以在某些時候只專注於測試某項功能。 
+
+另外在這專案有一個針對瀏覽器開啟的測試，根本不適合在單元測試期間測試，因為會造成測試永遠無法通過而無法打包專案，這也是為什麼我要將設定檔一分為二，分別讓surefire-plugin與failsafe-plugin各自進行不同的測試。 
+
+整體設定只有Jetty plug比較複雜，不過只要看executions也會發現Jetty只是在整合測試前執行start goal，把Web程式上起來，並且在整合測試後把Jetty卸載而以。 當然也不是不可用[Tomcat來作整合測試](http://tomcat.apache.org/maven-plugin-2.2/run-mojo-features.html)，只不過因為我用tomcat7:shutdown無法卸載Tomcat，所以我只好放棄它。 
+
+最後，我們使用 "mvn verify" 來查核所有的套件是否符合品質需求。 
+
+這只是一個簡單的小專案，若是要產生完整一點的專案，請參考[springJdbiArch](https://github.com/kentyeh/springJdbiArch). 
+
+#<a name="qualityEnsure"></a>軟體品質保證
+
+也許專案從開始到發佈，經歷編譯與測試都沒有錯，但是專案源碼，可能是資深與資淺人員一同撰寫而成的，難道他們所撰寫的源碼都保持一致的品質嗎? 這也許是個問題，所以我要介紹五個檢測工具，[PMD](http://pmd.sourceforge.net/)、[FindBugs](http://findbugs.sourceforge.net/)、[Checkstyle](http://checkstyle.sourceforge.net/)與[Cobertura](http://cobertura.github.io/cobertura/)
+
+
+##<a name="pms"></a>軟體品質保證
+這只是一個簡單的小專案，若是要產生完整一點的專案，請參考[springJdbiArch](https://github.com/kentyeh/springJdbiArch). 
+
+[PMD](http://pmd.sourceforge.net/)是針對源碼進行可能的檢測，我們要在Maven內使用其功能，就必須導入[maven-pmd-plugin](http://maven.apache.org/plugins/maven-pmd-plugin/).
+
+[maven-pmd-plugin](http://maven.apache.org/plugins/maven-pmd-plugin/)有數個[Goals](http://maven.apache.org/plugins/maven-pmd-plugin/plugin-info.html). 
+
+其中只有兩個Goals是我有興趣的， 
+
+好了，現在可以使用 mvn pmd:check 進行檢測或是用 mvn pmd:cpd-check檢測重覆的源碼了.
+
+| pmd:check | 檢查源碼內可能違反PMD預設的規則 |
+| ------------- | ------------- |
+| pmd:cpd-check | 檢查源碼內重覆的部分 |
+
+或者以 mvn verify 在最後完成階段再進行兩個Goals的檢測。
+
+也許有人會問，因為PDM是直接檢查源碼，那個我是否可以在compile時順便檢查(在&lt;executions&gt;置入&lt;phase&gt;compile&lt;/phase&gt;)， 當然可以，不過我之前也說了，PMD檢測出問題點不代表源碼無法通選測試與發佈，若在compile階段檢源碼的品質，有可能會因為不符合 PMD的檢測而導致後面的步驟(如test,package)做不下去(除非加入設定&lt;failOnViolation&gt;false&lt;/failOnViolation&gt;)，這也是何要單獨執行goal或是在 verfiy階段才來作檢測的原因 
