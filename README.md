@@ -972,3 +972,62 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 ```
 然後以 mvn site 產生整體報表時，並將FindBus?的xml檔案轉成Html報表(不建畢這重方法，另外方鄉請參考[springJdbiArch](https://github.com/kentyeh/springJdbiArch))
 
+##<a name="checkstyle"></a>Checkstyle
+
+[Checkstyle](https://github.com/kentyeh/mavenStartup/blob/master/findbugsgui.png)是用來檢查源碼的是否符合一定的風格，在pom.xml內加入以下Plugin 
+
+```
+<project>
+  ...
+  <reporting>
+        <plugins>
+            <plugin><!--FindBugs產生報表-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration><!--使用預設的風格時，可整段省略-->
+                    <configLocation>config/sun_checks.xml</configLocation><!--預設的風格-->
+                </configuration>
+            </plugin>
+        </plugins>
+  </reporting>
+<project>
+```
+上述的&lt;configLocation&gt;為指定檢查源碼所使用的風格，可為以下值 
+
+| config/sun_checks.xml	Sun Microsystems定義之風格(預設) |
+| ------------- | ------------- |
+| config/maven_checks.xml | Maven定義開發風格 |
+| config/turbine_checks.xml | Turbine定義開發風格 |
+|config/avalon_checks.xml | Avalon定義開發風格 |
+
+##<a name="cobertura"></a>Cobertura
+[Cobertura](http://cobertura.github.io/cobertura/)也是一款用來檢查測試覆蓋率
+
+```
+<project>
+    ...
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.5.2</version>
+                <executions>
+                    <execution>
+                        <phase>pre-site</phase>
+                        <goals>
+                            <goal>cobertura</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!-- JDK7版本要加入以下設定-->
+                <!--configuration>
+                    <argLine>-XX:-UseSplitVerifier</argLine>
+                </configuration-->
+            </plugin>
+           ...
+```
+
+現在我們可以用指令 mvn cobertura:cobertura 來產生報表，這個指令必然引發程式進行test，為啥?因為它不就是在檢查"測試"覆蓋率，它必須由測試中產生一些額外的資訊。 上述的設定，我設定了在pre-site這個階段時，要去執行cobertura這個goal，主要的原因是mvn site產生整合報表時，只會加入之前產生的 cobertura報表，而不會再次執行測試而產生報表，所以我要在執行site前去執行它。 
+
