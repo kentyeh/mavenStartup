@@ -130,7 +130,7 @@ Project目錄
 └target[各種處理後產生的資料，包含最終生的的打包標的]
 ```
 
-#<a href="thirdParty"></a>Maven 引用第三方函式庫
+#<a name="thirdParty"></a>Maven 引用第三方函式庫
 
 [之前](#identity)有說過，Maven有專門存放函式的repository (檔案庫)， 但是[ASF](http://www.apache.org/)再厲害，也不可能搜羅所有Library，所以必要的時候，我們必須引用第三方的函式檔案庫， 以下為可能會用到的來源(加入到Pom.xml)：
 
@@ -888,8 +888,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 也許專案從開始到發佈，經歷編譯與測試都沒有錯，但是專案源碼，可能是資深與資淺人員一同撰寫而成的，難道他們所撰寫的源碼都保持一致的品質嗎? 這也許是個問題，所以我要介紹五個檢測工具，[PMD](http://pmd.sourceforge.net/)、[FindBugs](http://findbugs.sourceforge.net/)、[Checkstyle](http://checkstyle.sourceforge.net/)與[Cobertura](http://cobertura.github.io/cobertura/)
 
 
-##<a name="pms"></a>軟體品質保證
-這只是一個簡單的小專案，若是要產生完整一點的專案，請參考[springJdbiArch](https://github.com/kentyeh/springJdbiArch). 
+##<a name="pmd"></a>PMD
 
 [PMD](http://pmd.sourceforge.net/)是針對源碼進行可能的檢測，我們要在Maven內使用其功能，就必須導入[maven-pmd-plugin](http://maven.apache.org/plugins/maven-pmd-plugin/).
 
