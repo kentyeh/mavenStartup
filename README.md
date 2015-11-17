@@ -11,6 +11,18 @@ Maven最大的好處，就是把上面的無聊事標準化，簡單化了，用
 1. 下載Mav[](http://maven.apache.org/download.html)en後，解開到目錄，例 x:\maven\ 
 2. 決定您電腦的函式庫(Maven 把所有Libery集中管理)所在，預設在 用戶目錄/.m2，若要變更不同位置，修改 x:\maven\conf\settings.xml的<localRepository>設定 
 3. 設定環境變數 M2_HOME 指到 Maven目錄，並且將 Maven目錄下的 bin加到執行路徑
+4. 變更中央倉庫到Google的鏡象倉庫以加速函式庫下載(修改 x:\maven\conf\settings.xml的<mirrors>設定 )
+   
+   ```
+   <mirrors>
+     <mirror>
+       <id>google-maven-central</id>
+       <name>Google Maven Central</name>
+       <url>https://maven-central.storage.googleapis.com</url>
+       <mirrorOf>central</mirrorOf>
+     </mirror>
+   </mirrors>
+   ```
 
 #<a name="firstProject"></a>用Maven建立第一個Project
 
@@ -1305,3 +1317,4 @@ mvn -T 1.5C clean install # 每一CPU核心以1.5個執行緒建置
 
 一般來說可提升20-50%的效率, 唯一要考量的是Plugin是否執行緒安全，
 所幸絕大部分都是執行緒安全，我的建議是以 -T 1C 的參數是比較合適。
+
