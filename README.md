@@ -13,7 +13,7 @@ Maven最大的好處，就是把上面的無聊事標準化，簡單化了，用
 3. 設定環境變數 M2_HOME 指到 Maven目錄，並且將 Maven目錄下的 bin加到執行路徑
 4. 變更中央倉庫到Google的鏡象倉庫以加速函式庫下載(修改 x:\maven\conf\settings.xml的<mirrors>設定 )
    
-   ```
+   ```xml
    <mirrors>
      <mirror>
        <id>google-maven-central</id>
@@ -38,7 +38,7 @@ Maven最大的好處，就是把上面的無聊事標準化，簡單化了，用
 
 確定後建立Project的基本架構，如果您不要用互動的方式，上述動作可以以下指令完成相同的事 
 
-```
+``` bash
 mvn archetype:create -DgroupId=idv.kentyeh.software -DartifactId=firstmaven \
       -DpackageName=idv.kentyeh.software -DarchetypeArtifactId:maven-archetype-quickstart \
       -Dversion=1.0-SNAPSHOT
@@ -52,7 +52,7 @@ Maven的識別管理，分為三層 groupId:artifactId:version，一個組織(gr
 
 Maven的管理設定主要靠Pom.xml進行，打開剛才建立的Project設定檔，內容說明如下： 
 
-```
+``` xml
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -80,7 +80,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>{{ book.junit }}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -90,7 +90,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 
 首先要說明的是dependencies段落，比如說，Project內會用到 commons-loggin 的Library，我們可以在此加入新的dependency段落，
 
-```
+``` xml
     <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
@@ -146,7 +146,7 @@ Project目錄
 
 [之前](#identity)有說過，Maven有專門存放函式的repository (檔案庫)， 但是[ASF](http://www.apache.org/)再厲害，也不可能搜羅所有Library，所以必要的時候，我們必須引用第三方的函式檔案庫， 以下為可能會用到的來源(加入到Pom.xml)：
 
-```
+``` xml
 <repositories>
     <repository><!--J2ee 最新的函式庫在此-->
         <id>java.net2</id>
@@ -162,7 +162,7 @@ Project目錄
 
 Maven 的指令可以串接，例如以下指令 
 
-```
+``` bash
 mvn clean package javadoc:javadoc exec:exec
 ```
 
@@ -170,7 +170,7 @@ mvn clean package javadoc:javadoc exec:exec
 
 上述的 clean、package(打包）都很容易理解，可是為何又出現了 javadoc:javadoc、exec:exec 這樣的表示， 這是因為Plugin是Maven裡面的一種特殊專案，她裡面存在一些task，當這些Plugin被包含進專案的pom.xml時， 例如要執行maven-javadoc-plugin這個Plugin的javadoc task時，完整的命令下法應該是 
 
-```
+``` bash
 mvn org.apache.maven.plugins:maven-javadoc-plugin:2.10.1:javadoc
 ```
 
@@ -180,7 +180,7 @@ mvn org.apache.maven.plugins:maven-javadoc-plugin:2.10.1:javadoc
 
 plugin的定義結構通常如下 :
 
-```
+``` xml
 <project ...>
     ...
     <build>
@@ -206,31 +206,31 @@ plugin的定義結構通常如下 :
 
 我們建立的第一個 Project 的 [pom.xml](#projectMangement)檔案內有一個<properties>段落，可以讓我們定義一些變數， 例如Spring 通常含有多種Library，其引用版本應該一致，所以我通常會定義一個變數 
 
-```
+``` xml
 <org.springframework.version>4.2.0.RELEASE</org.springframework.version>
 ```
 
 然後，定義版本別的地方會寫成 
 
-```
+``` xml
 <version>${org.springframework.version}</version>
 ```
 
 以後當版本變更的時候，只要修改&lt;properties&gt;下的&lt;org.springframework.version&gt;4.2.0.RELEASE&lt;/org.springframework.version&gt;，就可以引用新的版本。 初建立時的[pom.xm](#projectMangement)l內已經有一個變數 
 
-```
+``` xml
 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 ```
 
 為什麼沒有看到在那裡引用呢? 其實，前面已經提過，Maven的所有作業都是靠許多的Plugin來達成，雖然在這個[pom.xml](#projectMangement)內沒有看到引用任何Plugin， 但當我們執行 "mvn compile"的時候，因為Maven已經內定很多指令所使用的Plugin，所以實際上該命令會去執行 
 
-```
+``` bash
 mvn compiler:compile
 ```
 
 而[compiler Plugin](http://maven.apache.org/plugins/maven-compiler-plugin/)，encoding會預設參考[${project.build.sourceEncoding}](http://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#encoding)這個變數， 所以我們在pom.xml的<properties>指定這個變數的值為"UTF-8"，所以在編譯程式時，編譯器就會知道程式使用的編碼。 [這邊](http://docs.codehaus.org/display/MAVENUSER/MavenPropertiesGuide)有列出一些預設的[變數](http://books.sonatype.com/mvnref-book/reference/resource-filtering-sect-properties.html)，可以參考使用。 最後一提的是build內可放一個finalName，一般來說打包的最後檔名為artifactId-version.war(jar,ear)，一般來說，web檔deploy時總希望固定一個名字，使用finalName與一些變數就可以將打包檔的名稱固定住， 例如，我們打包的名字不要有版本資料便可設定如下 
 
-```
+```  xml
 <finalName>${project.artifact}.war</finalName>
 ```
 
@@ -278,7 +278,7 @@ mvn compiler:compile
 
 ##<a name="compile"></a>Compile的設定
 
-```
+``` xml
 <project ...>
     <build>
         <plugins>
@@ -301,7 +301,7 @@ mvn compiler:compile
 
 因為我不用JUnit，所以我會設定TestNG 
 
-```
+``` xml
 <project ...>
     <build>
         <plugins>
@@ -325,7 +325,7 @@ mvn compiler:compile
 
 像GWT用於Client Side Code的Liberary，明確要求要把源碼包入jar檔內，所以要把Source Code與gwt.xml一起包到jar檔內
 
-```
+``` xml
 <project ...>
     <build>
         <resources>
@@ -349,7 +349,7 @@ mvn compiler:compile
 
 ##<a name="executableJar"></a>建立可執行Jar
 
-```
+``` xml
 <project ...>
     <build>
         <plugins>
@@ -373,7 +373,7 @@ mvn compiler:compile
 
 ##<a name="singleExecutableJar"></a>建立單一可執行Jar(把所有Library一起打成一包)
 
-```
+``` xml
 <project ...>
     <build>
         <plugins>
@@ -399,7 +399,7 @@ mvn compiler:compile
 
 ##<a name="runDirect"></a>直接執行程式
 
-```
+``` xml
 <project ...>
     <build>
         <plugins>
@@ -427,7 +427,7 @@ mvn compiler:compile
 
 [上述](#runDirect)直接執行程式的前題是，必須是在源碼已經編譯完成的情形下，如果源碼未經compile，則會因為沒有可執行的class而發生錯誤。 當然您也可以執行 "mvn compile exec:exec"來解決這個問題，而另外一種方式就是載 exec:exec 關聯到 test 這個 phase， 所以當我們執行 "mvn test" 時，就會先進行 compile然後再執行 "exec:exec"設定如下 
 
-```
+``` xml
 <project ...>
     <build>
         <plugins>
@@ -461,7 +461,7 @@ mvn compiler:compile
 
 [之前](#singleExecutableJar)建立單一可執行Jar，並不會把Jar裡面的META-INF一起包進去，可是像Spring的把Schma等相關資料都放在META-INFO內， 所以必須使用其它的plugin一起將這些資料包進去，並設定關聯到"package" phase 
 
-```
+``` xml
 <project ...>
     <build>
         <plugins>
@@ -500,7 +500,7 @@ mvn compiler:compile
 
 當我們開發Web程式的常常會碰的一個問題是，例如Tomcat有一個預設的系統變數${catalina.home}可指到Tomcat所在的目錄(Jboss則是${project.build.directory})， 所以我們可以在log4j.xml或是logback.xml內直接將appender log file輸出到 ${catalina.home}/log/myweb.log (或是${project.build.directory}/logs/myweb.log)， 但是當我們進行單元測試時，開發環境下根本不認識這兩個變數，所以我們必須設定這兩個變數並且將之指到某個特定的目錄下。
 
-```
+``` xml
 <project ...>
     <build>
         <plugins>
@@ -535,7 +535,7 @@ mvn compiler:compile
 
 這個需求表示我們須要能夠在設定檔中放入一些[變數](#property)，而這些[變數](#property)的值要能夠在外部(如執行時的參數或是設定在pom.xml內)決定其值， 一個最簡單而通用的設定如下，預設會把.properties與.xml檔案內的[變數](#property)替換為真正的值)：
 
-```
+``` xml
 <project ...>
     <build>
         <resources>
@@ -555,13 +555,13 @@ mvn compiler:compile
 ```
 
 其中 directory 裝是資源檔的目錄所在，filtering設為true表示裡面的檔案要替換，例如，我常用的Log4j2.xml裡的設定 
-
-```
+{% raw %}
+``` xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="${project.artifactId}" verbose="false" monitorInterval="30">
         <Appenders>
                 <Console name="console">
-                        <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level} %class{1.}.%M(%L) - %highlight{%msg}%n%ex{full}%n" />
+                        <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %highlight`{`%-5level`} %class{1.}.%M(%L) - %highlight{%msg}%n%ex{full}%n" />
                 </Console>
                 <RollingRandomAccessFile name="${project.artifactId}-Rolling" fileName="${sys:catalina.home}/logs/${project.artifactId}.log"
                         filePattern="${sys:catalina.home}/logs/${project.artifactId}-%d{MM-dd-yyyy}-%i.log.gz">
@@ -589,7 +589,7 @@ mvn compiler:compile
         </Loggers>
 </Configuration>
 ```
-
+{% endraw %}
 在執行或打包時裡面的[變數](#property)(${project.artifactId})就會被置換為專案名稱。
 
 或者我們也可以把變數定義在[Profile](#profile)內，然後在執行 mvn 命令時，指定Profile，以便置換成不同的值。 
@@ -598,7 +598,7 @@ mvn compiler:compile
 
 也許您不是一個人寫程式，那麼組態管理(Software Configuration Management)就是必須的，當然也許您的系統已經裝有tortoisesxxx 這類的視覺化管理程式，如果僅僅只裝了svn或是git的client程式，Maven也提供了相關的Plugin以簡化整個管理作業 以[git](https://git-scm.com/)為例，我們僅僅須要一個簡單的pom.xml就可以了
 
-```
+``` xml
 <project ...>
   <modelVersion>4.0.0</modelVersion>
   <groupId>您的單位或組識</groupId>
@@ -631,7 +631,7 @@ mvn compiler:compile
 
 如此我們可以執行scm plugin相關的[goals](http://maven.apache.org/scm/maven-scm-plugin/plugin-info.html)了。 scm通常有帳號/密碼的問題，當然直接寫在pom.xml內不是不行，但這跟全世界公開有何不同? 所以我建議最好設定在x:\maven\conf\settings.xml的servers標籤下增加如下 
 
-```
+``` xml
 <servers>  
   <server>
     <id>yourRepoHost:port</id>
@@ -648,7 +648,7 @@ mvn compiler:compile
 
 maven用久了，您就會發現這個問題：比如說您的pom 同時引用了如下： 
 
-```
+``` xml
 <project ...>
     <dependencies>
         <dependency>
@@ -667,7 +667,7 @@ maven用久了，您就會發現這個問題：比如說您的pom 同時引用�
 
 雖然都是使用了3.0.5版，可是"package"後，您會發現org.springframework.core 怎麼會同時存在3.0.5與3.0.3的jar檔，這是因為spring-security-cor的dependency引用了3.0.3版的org.springframework.core，所以才會同時存在兩個版本。 要如何事先發現這個問題呢? 這時候我們需要執行另一個goal "dependency:tree"來找出dependency的引用關系， 上述的執行結果如下： 
 
-```
+``` bash
 ------------------------------------------------------------------------
 Building firstmaven 1.0-SNAPSHOT
 ------------------------------------------------------------------------
@@ -695,7 +695,7 @@ BUILD SUCCESS
 
 所以我們當然想使用新版本，所以必須讓spring-security-core排除引用 org.springframework.core 3.0.3版，設定如下： 
 
-```
+``` xml
 <project ...>
     <dependencies>
         <dependency>
@@ -720,7 +720,7 @@ BUILD SUCCESS
 
 再執行一次"mvn dependency:tree"看看引用的library 
 
-```
+``` bash
 ------------------------------------------------------------------------
 Building firstmaven 1.0-SNAPSHOT
 ------------------------------------------------------------------------
@@ -758,7 +758,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 有時候我們必須依環境不同，而有不同的作法，所以可以用Profile將各個Plugin作區別設定， 然後以 "mvn -P設定" 來決定要如何執行特定的Plugin。 例如在Andord開發的時候，用模擬器測試的時候，為加快速度，根本不必考慮[簽署](http://developer.android.com/guide/publishing/app-signing.html)apk的問題，但是發佈App時則一定要簽署才行。 所以我們設定如下 
 
-```
+``` xml
 <project ...>
     <profiles>
         <profile>
@@ -801,7 +801,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 另外的例子如Web程式在開發時用的是Window的環境，而發佈主機則是Linux環境，因為我們須要在環境內放一個system.properties 來為不同的環境設定不同的參數， 例如我們在專案下開了兩個目錄TomcatEnv?與JbossEnv?，裡面各放了一個system.properties，然後打打包專案時，才指定要用那一個檔案。 
 
-```
+``` xml
 <project ...>
     <profiles>
         <profile>
@@ -929,7 +929,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 首先我們先加入該[plugin](http://mojo.codehaus.org/findbugs-maven-plugin/).
 
-```
+``` xml
 <project>
   ...    
   <build>
@@ -962,7 +962,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 或者我們在<reporting>段落內加入 
 
-```
+``` xml
 <project>
   ...
   <reporting>
@@ -987,7 +987,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 [Checkstyle](https://github.com/kentyeh/mavenStartup/blob/master/findbugsgui.png)是用來檢查源碼的是否符合一定的風格，在pom.xml內加入以下Plugin 
 
-```
+``` xml
 <project>
   ...
   <reporting>
@@ -1015,7 +1015,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 ##<a name="cobertura"></a>Cobertura
 [Cobertura](http://cobertura.github.io/cobertura/)也是一款用來檢查測試覆蓋率
 
-```
+``` xml
 <project>
     ...
     <build>
@@ -1051,7 +1051,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 它的作法分兩種，一種是即時(Runtime)將用到的檔案進行合併壓縮，另一種就是事先把資源檔緊實化，然後放入打包檔後一起發佈。
   
 我要介紹的是後者。首先引入Plugin設定
-```
+``` xml
   <build>
       <plugins>
           <plugin>
@@ -1079,7 +1079,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 然後在WEB-INF/下建立一個[http://code.google.com/p/wro4j/wiki/WroFileFormat wro.xml]如下：
 
-```
+``` xml
 <?xml version="1.0" encoding="UTF-8"?>
 <groups xmlns="http://www.isdc.ro/wro"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -1115,7 +1115,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 
 最後則是引用
 
-```
+``` html
 <html>
 <head>
   <title>Web Frameworks Comparison</title>
@@ -1149,7 +1149,7 @@ mvn wro4j:run 產生即可，若是有變動的話，再執行一次重新產生
   
 以下是我通常用的設定方式
 
-```
+``` xml
 <project>
     ...
     <build>
@@ -1298,7 +1298,7 @@ mvn wro4j:run 產生即可，若是有變動的話，再執行一次重新產生
 ```
   上述的設定需要在專案中包含一些報表文件模版，建議您使用以下指定產生一個示範專案(Spring)，然後參考site目錄下的模版範例
 
-```
+``` bash
   mvn archetype:generate -DarchetypeRepository=http://gwtrepo.googlecode.com/svn/repo \
         -DarchetypeGroupId=com.google.code \
         -DarchetypeArtifactId=SpringWebStart \
@@ -1309,7 +1309,7 @@ mvn wro4j:run 產生即可，若是有變動的話，再執行一次重新產生
 
 Maven 3 可以使用[平行處理](https://cwiki.apache.org/confluence/display/MAVEN/Parallel+builds+in+Maven+3)方式加速整個執行效率，例如
 
-```
+``` bash
 mvn -T 4 clean install # 以4個執行緒建置
 mvn -T 1C clean install # 每一CPU核心以1個執行緒建置
 mvn -T 1.5C clean install # 每一CPU核心以1.5個執行緒建置
