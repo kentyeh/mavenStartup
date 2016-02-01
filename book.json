@@ -4,7 +4,7 @@
   "extension": null,
   "generator": "site",
   "isbn": null,
-  "plugins": ["github","book-summary-scroll-position-saver","splitter"],
+  "plugins": ["github","book-summary-scroll-position-saver","splitter","anker-enable"],
   "pluginsConfig": {
     "github": {
        "url": "https://github.com/kentyeh/mavenStartup"
