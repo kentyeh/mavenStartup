@@ -29,7 +29,7 @@ Maven最大的好處，就是把上面的無聊事標準化，簡單化了，用
 在命令視窗執行 mvn archetype:generate 命令，使用互動方式建立Project， 會依序問幾個問題 
 
 | | |
-|-|-|
+| --- | --- |
 | Choose archetype: | 選擇建立Project的範本，預設是99:maven-archetype-quickstart建立一個最基本的Project |
 | Choose version: | 選擇範本的版本，會列出一些範本可用的版本，其差異是就不用版本的範本可能會建立有不同的資源檔(比如可能附帶圖檔) |
 | 定義groupId: | 輸入要建立Project所隸屬的組織或公司，如我自已用idv.kentyeh.software | 
@@ -102,7 +102,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 不知道commons-loggin的識別資料?沒關係，到這裡查。至於scope可以不填，表示打包Project(如war,ear…)時， 引用的Library會一起被打包，Scope的值說明如下： 
 
 | | |
-|-|-|
+| --- | --- |
 | compile | Scope不填時的預設值，表示Project程式須要這個Library才能運作，所以會一併被打包 |
 | provided | 表示編譯會用到，但是系統在需要的時候會提供，打包Project不要含進去，例如J2ee的Library，像是servlet-api，就是由App Server提供 |
 | runtime | 表示編譯時用不到，只有執行時會用到，所以發佈程式時須要一併打包，如GWT 的 gwt-servlet.jar |
@@ -239,7 +239,7 @@ mvn compiler:compile
 以下是一些預設變數的列表 
 
 | | |
-|-|-|
+| --- | --- |
 | ${basedir} | 表示包含pom.xml的目錄路徑 |
 | ${version} | 等同${project.version}或${pom.version}，即程式的版本編號(maven通常建議不要直接使用${version}) |
 | ${project.build.directory} | 就是target目錄，等同${pom.project.build.directory} |
@@ -262,7 +262,7 @@ mvn compiler:compile
 以下列舉一些常用的指令(goals) 
 
 | | |
-|-|-|
+| --- | --- |
 | mvn clean | 進行清理作業，通常是將${project.build.directory} 砍掉 |
 | mvn compile | 編譯程式 |
 | mvn test | 測試程式 |
@@ -866,7 +866,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 這個範例程式除了首頁外，只提供了一個echo的網頁功能，所以我假定單元測試(測試功能性)的標的有兩個 
 
 | | |
-|-|-|
+| --- | --- |
 | DNS功能測試  | 測試在同時多個人密集解析網址的時候，會不會出錯  |
 | Echo功能測試  | 選擇範本的版本，會列出一些範本可用的版本，其差異是就不用版本的範本可能會建立有不同的資源檔(比如可能附帶圖檔) |
  
@@ -875,7 +875,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 這個專案有三支測試程式，說明如下： 
 
 | | |
-|-|-|
+| --- | --- |
 | TestDns?.java | 單元測試：以多執行緒測試解析DNS |
 | TestWeb?.java | 單元測試：測試WEB功能的正確性 |
 | TestBrowser?.java | 整合測試：測試錯誤網址是否會出現首頁 |
@@ -883,7 +883,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 這裡有四個Plugin要加以說明， 
 
 | | |
-|-|-|
+| --- | --- |
 | [keytool-plugin](http://mojo.codehaus.org/keytool/keytool-maven-plugin) | 為Tomcat 與 Jetty Plugin在執行的時候產生簽章，以啟用SSL(https) |
 | [surefire-plugin](http://maven.apache.org/plugins/maven-surefire-plugin) | 負責單元測試 |
 | [failsafe-plugin](http://maven.apache.org/plugins/maven-failsafe-plugin) | 負責整合測試 |
@@ -917,7 +917,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 好了，現在可以使用 mvn pmd:check 進行檢測或是用 mvn pmd:cpd-check檢測重覆的源碼了.
 
 | | |
-|-|-|
+| --- | --- |
 | [pmd:check](http://maven.apache.org/plugins/maven-pmd-plugin/check-mojo.html) | 檢查源碼內可能違反PMD預設的規則 |
 | [pmd:cpd-check](http://maven.apache.org/plugins/maven-pmd-plugin/cpd-check-mojo.html) | 檢查源碼內重覆的部分 |
 
@@ -1014,7 +1014,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 上述的&lt;configLocation&gt;為指定檢查源碼所使用的風格，可為以下值 
 
 | | |
-|-|-|
+| --- | --- |
 | config/sun_checks.xml	Sun Microsystems定義之風格(預設) |
 | config/maven_checks.xml | Maven定義開發風格 |
 | config/turbine_checks.xml | Turbine定義開發風格 |
@@ -1109,7 +1109,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 上述路徑的[http://code.google.com/p/wro4j/wiki/WroFileFormat 寫法]方式如下
 
 | | |
-|-|-|
+| --- | --- |
 | 以/開頭如 /js/main.js | 表示為Servlet Context路徑 |
 | 以classpath:開頭如classpath:com/google/js/main.js | 表示javaScript或是css存在於classpath內 |
 | 以file:開頭如file:c:\js\**.css | 表示javaScript或是css存在於檔案系統內 |
@@ -1118,7 +1118,7 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 路徑也可包含萬用字元
 
 | | |
-|-|-|
+| --- | --- |
 |`*` | 單一路徑元素，如`*.css`表示該路徑內(不含子路徑)的所有css檔案|
 | `**` | 多重路徑元素，如`c:\js\**.css`表示c:\js\下(含子路徑)所有的css檔案 |
 | ? | 表示任何單一字視，如/usr/javaScript/mobile?.css，可能為 mobile1.css或是mobileA.css... |
@@ -1140,8 +1140,9 @@ idv.kentyeh.software:firstmaven:jar:1.0-SNAPSHOT
 這裡要說明的是plugin的參數設定
 
 | | |
-|-|-|
+| --- | --- |
 | targetGroups | 在此指定了all，所以只會處理group name='all'的設定，若不指定則會處理所有的group，<br/>也就是除了all.css,all.js外還會產生dev.css與dev.js |
+| ------------- | ------------- |
 | minimize | 預設值為true，若是在開發階段時，可設為false，方便利用firebug或是chrome的開發工具進行除錯 |
 | contextFolder | 指定web程式的所在 |
 | destinationFolder | 指定緊實化的產出目的目錄 |
