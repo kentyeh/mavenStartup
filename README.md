@@ -1,3 +1,4 @@
+[Web版](http://kentyeh.github.io/mavenStartup/)請從[此進](http://kentyeh.github.io/mavenStartup/)
 <!-- 開始使用Maven是因為受夠了每次開始一個Project，都要重新開始撰寫 -->
 Ant build.xml，雖然有過去建立的範本，但是還是的根據不同狀況加以
 改寫(比如不同的打包方式，如同時deploy 到tomcat 與jboss時用到不
@@ -480,6 +481,14 @@ mvn compiler:compile
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <artifactSet>
+                              <excludes><!--用 mvn dependency:analyze 指令檢視並移除一些不需要的函式庫-->
+                                <exclude>org.apache.logging.log4j:log4j-1.2-api:jar:</exclude>
+                                <exclude>org.apache.logging.log4j:log4j-jcl:jar:</exclude>
+                                <exclude>org.apache.logging.log4j:log4j-slf4j-impl:jar:</exclude>
+                                <exclude>org.springframework:spring-context-support:jar:</exclude>
+                              </excludes>
+                            </artifactSet>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>完整類別名稱</mainClass>
