@@ -987,6 +987,14 @@ Maven&#x6700;&#x5927;&#x7684;&#x597D;&#x8655;&#xFF0C;&#x5C31;&#x662F;&#x628A;&#x
                             <span class="hljs-tag">&lt;<span class="hljs-title">goal</span>&gt;</span>shade<span class="hljs-tag">&lt;/<span class="hljs-title">goal</span>&gt;</span>
                         <span class="hljs-tag">&lt;/<span class="hljs-title">goals</span>&gt;</span>
                         <span class="hljs-tag">&lt;<span class="hljs-title">configuration</span>&gt;</span>
+                            <span class="hljs-tag">&lt;<span class="hljs-title">artifactSet</span>&gt;</span>
+                              <span class="hljs-tag">&lt;<span class="hljs-title">excludes</span>&gt;</span><span class="hljs-comment">&lt;!--&#x7528; mvn dependency:analyze &#x6307;&#x4EE4;&#x6AA2;&#x8996;&#x4E26;&#x79FB;&#x9664;&#x4E00;&#x4E9B;&#x4E0D;&#x9700;&#x8981;&#x7684;&#x51FD;&#x5F0F;&#x5EAB;--&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">exclude</span>&gt;</span>org.apache.logging.log4j:log4j-1.2-api:jar:<span class="hljs-tag">&lt;/<span class="hljs-title">exclude</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">exclude</span>&gt;</span>org.apache.logging.log4j:log4j-jcl:jar:<span class="hljs-tag">&lt;/<span class="hljs-title">exclude</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">exclude</span>&gt;</span>org.apache.logging.log4j:log4j-slf4j-impl:jar:<span class="hljs-tag">&lt;/<span class="hljs-title">exclude</span>&gt;</span>
+                                <span class="hljs-tag">&lt;<span class="hljs-title">exclude</span>&gt;</span>org.springframework:spring-context-support:jar:<span class="hljs-tag">&lt;/<span class="hljs-title">exclude</span>&gt;</span>
+                              <span class="hljs-tag">&lt;/<span class="hljs-title">excludes</span>&gt;</span>
+                            <span class="hljs-tag">&lt;/<span class="hljs-title">artifactSet</span>&gt;</span>
                             <span class="hljs-tag">&lt;<span class="hljs-title">transformers</span>&gt;</span>
                                 <span class="hljs-tag">&lt;<span class="hljs-title">transformer</span> <span class="hljs-attribute">implementation</span>=<span class="hljs-value">&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;</span>&gt;</span>
                                     <span class="hljs-tag">&lt;<span class="hljs-title">mainClass</span>&gt;</span>&#x5B8C;&#x6574;&#x985E;&#x5225;&#x540D;&#x7A31;<span class="hljs-tag">&lt;/<span class="hljs-title">mainClass</span>&gt;</span>
