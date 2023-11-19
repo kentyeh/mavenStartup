@@ -1,0 +1,59 @@
+# JaCoCo
+一般我們會寫測試程式，但是測一個Function是測試，測試十個Function也是測試，所以我們需要一個方式來評斷測試的涵蓋率。
+一般的設定如下:
+```xml
+<build>
+  <plugins>
+    <plugin>
+      <groupId>za.co.absa.jacoco</groupId>
+      <artifactId>jacoco-maven-plugin</artifactId>
+      <version>0.8.11</version>
+      <executions>
+        <execution>
+          <id>pre-test</id>
+          <goals><goal>prepare-agent</goal></goals>
+        <execution>
+        <execution>
+          <id>post-test</id>
+          <goals><goal>report</goal></goals>
+          <configuration>
+            <outputDirectory>${project.build.directory}/site/jacoco-ut</outputDirectory>
+          </configuration>
+        <execution>
+        <!--如果有整合測試，也就是有定義 maven-failsafe-plugin ，再加下面兩個<execution> -->
+        <execution>
+          <id>pre-integration-test</id>
+          <goals><goal>prepare-agent-integration</goal></goals>
+        <execution>
+        <execution>
+          <id>report-integration</id>
+          <goals><goal>report-integration</goal></goals>
+          <configuration>
+            <outputDirectory>${project.build.directory}/site/jacoco-it</outputDirectory>
+          </configuration>
+        <execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+```
+同樣，報表也需整合進Site Report裡
+```xml
+<pom>
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.11</version>
+        <configuration>
+          <reportSet>
+            <id>jacoco-report</id>
+            <reports><report>report</report></reports>
+          </reportSet>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+</pom>
+```

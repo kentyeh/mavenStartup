@@ -1,0 +1,26 @@
+# Summary
+ [Kent's Blog]()
+
+---
+
+- [建立Maven環境](buildMavenEnv.md)
+- [建立第一個Project](firstProject.md)
+- [識別管理](identity.md)
+- [專案管理](pomStructor.md)
+- [目錄架構](archetype.md)
+- [外掛](plugin.md)
+    - [TestNG設定](testng.md)
+    - [建立可執行檔](executableJar.md)
+    - [直接執行程式](runDirect.md)
+- [生命週期](lifeCycle.md)
+- [Profile](profile.md)
+- [版本管理](version.md)
+- [多模組管理](multimodule.md)
+- [測試與整合測試](testing.md)
+- [軟體品質保證](qualityEnsure.md)
+    - [SpotBugs](spotBugs.md)
+    - [PMD](pmd.md)
+    - [Checkstyle](checkstyle.md)
+    - [JaCoCo](jacoco.md)
+- [Site Report](siteReport.md)
+- [執行效率](performance.md)

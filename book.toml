@@ -1,0 +1,30 @@
+[book]
+title = "Maven 初學者中文教程"
+authors = ["Kent Yeh"]
+language = "zh-Hans-TW"
+multilingual = false
+src = "src"
+
+[rust]
+edition = "2021"
+
+[build]
+build-dir = "target"
+create-missing = true
+
+[output.html]
+site-url = "/mavenStartup/"
+git-repository-url = "https://github.com/kentyeh/mavenStartup"
+no-section-label = false
+
+[output.html.print]
+enable = false
+
+[output.html.fold]
+enable = true
+level = 1
+
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]
+max-level = 3
