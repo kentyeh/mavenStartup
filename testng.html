@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>建立Maven環境 - Maven 初學者中文教程</title>
+        <title>TestNG設定 - Maven 初學者中文教程</title>
 
 
         <!-- Custom HTML head -->
@@ -87,7 +87,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><div>Kent's Blog</div></li><li class="spacer"></li><li class="chapter-item expanded "><a href="buildMavenEnv.html" class="active"><strong aria-hidden="true">1.</strong> 建立Maven環境</a></li><li class="chapter-item expanded "><a href="firstProject.html"><strong aria-hidden="true">2.</strong> 建立第一個Project</a></li><li class="chapter-item expanded "><a href="identity.html"><strong aria-hidden="true">3.</strong> 識別管理</a></li><li class="chapter-item expanded "><a href="pomStructor.html"><strong aria-hidden="true">4.</strong> 專案管理</a></li><li class="chapter-item expanded "><a href="archetype.html"><strong aria-hidden="true">5.</strong> 目錄架構</a></li><li class="chapter-item expanded "><a href="plugin.html"><strong aria-hidden="true">6.</strong> 外掛</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="testng.html"><strong aria-hidden="true">6.1.</strong> TestNG設定</a></li><li class="chapter-item "><a href="executableJar.html"><strong aria-hidden="true">6.2.</strong> 建立可執行檔</a></li><li class="chapter-item "><a href="runDirect.html"><strong aria-hidden="true">6.3.</strong> 直接執行程式</a></li></ol></li><li class="chapter-item expanded "><a href="lifeCycle.html"><strong aria-hidden="true">7.</strong> 生命週期</a></li><li class="chapter-item expanded "><a href="profile.html"><strong aria-hidden="true">8.</strong> Profile</a></li><li class="chapter-item expanded "><a href="version.html"><strong aria-hidden="true">9.</strong> 版本管理</a></li><li class="chapter-item expanded "><a href="multimodule.html"><strong aria-hidden="true">10.</strong> 多模組管理</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">11.</strong> 測試與整合測試</a></li><li class="chapter-item expanded "><a href="qualityEnsure.html"><strong aria-hidden="true">12.</strong> 軟體品質保證</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="spotBugs.html"><strong aria-hidden="true">12.1.</strong> SpotBugs</a></li><li class="chapter-item "><a href="pmd.html"><strong aria-hidden="true">12.2.</strong> PMD</a></li><li class="chapter-item "><a href="checkstyle.html"><strong aria-hidden="true">12.3.</strong> Checkstyle</a></li><li class="chapter-item "><a href="jacoco.html"><strong aria-hidden="true">12.4.</strong> JaCoCo</a></li></ol></li><li class="chapter-item expanded "><a href="siteReport.html"><strong aria-hidden="true">13.</strong> Site Report</a></li><li class="chapter-item expanded "><a href="performance.html"><strong aria-hidden="true">14.</strong> 執行效率</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><div>Kent's Blog</div></li><li class="spacer"></li><li class="chapter-item expanded "><a href="buildMavenEnv.html"><strong aria-hidden="true">1.</strong> 建立Maven環境</a></li><li class="chapter-item expanded "><a href="firstProject.html"><strong aria-hidden="true">2.</strong> 建立第一個Project</a></li><li class="chapter-item expanded "><a href="identity.html"><strong aria-hidden="true">3.</strong> 識別管理</a></li><li class="chapter-item expanded "><a href="pomStructor.html"><strong aria-hidden="true">4.</strong> 專案管理</a></li><li class="chapter-item expanded "><a href="archetype.html"><strong aria-hidden="true">5.</strong> 目錄架構</a></li><li class="chapter-item expanded "><a href="plugin.html"><strong aria-hidden="true">6.</strong> 外掛</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="testng.html" class="active"><strong aria-hidden="true">6.1.</strong> TestNG設定</a></li><li class="chapter-item "><a href="executableJar.html"><strong aria-hidden="true">6.2.</strong> 建立可執行檔</a></li><li class="chapter-item "><a href="runDirect.html"><strong aria-hidden="true">6.3.</strong> 直接執行程式</a></li></ol></li><li class="chapter-item expanded "><a href="lifeCycle.html"><strong aria-hidden="true">7.</strong> 生命週期</a></li><li class="chapter-item expanded "><a href="profile.html"><strong aria-hidden="true">8.</strong> Profile</a></li><li class="chapter-item expanded "><a href="version.html"><strong aria-hidden="true">9.</strong> 版本管理</a></li><li class="chapter-item expanded "><a href="multimodule.html"><strong aria-hidden="true">10.</strong> 多模組管理</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">11.</strong> 測試與整合測試</a></li><li class="chapter-item expanded "><a href="qualityEnsure.html"><strong aria-hidden="true">12.</strong> 軟體品質保證</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="spotBugs.html"><strong aria-hidden="true">12.1.</strong> SpotBugs</a></li><li class="chapter-item "><a href="pmd.html"><strong aria-hidden="true">12.2.</strong> PMD</a></li><li class="chapter-item "><a href="checkstyle.html"><strong aria-hidden="true">12.3.</strong> Checkstyle</a></li><li class="chapter-item "><a href="jacoco.html"><strong aria-hidden="true">12.4.</strong> JaCoCo</a></li></ol></li><li class="chapter-item expanded "><a href="siteReport.html"><strong aria-hidden="true">13.</strong> Site Report</a></li><li class="chapter-item expanded "><a href="performance.html"><strong aria-hidden="true">14.</strong> 執行效率</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -170,40 +170,111 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="建立maven環境"><a class="header" href="#建立maven環境">建立Maven環境</a></h1>
-<ol start="0">
-<li>
-<p>先把 JDK 裝好。</p>
-</li>
-<li>
-<p>下載<a href="http://maven.apache.org/download.html">Maven</a>後，解開到目錄，例如 x:\maven</p>
-</li>
-<li>
-<p>決定您電腦的函式庫(Maven 把所有Libery集中管理)所在，預設在 用戶目錄下的 ~/.m2，若要變更不同位置，修改 x:\maven\conf\settings.xml的<localRepository>設定到您存放第三方函式庫的目錄，例如: y:\mvnrepo</p>
-<pre><code class="language-xml">&lt;settings xmlns=&quot;http://maven.apache.org/SETTINGS/1.2.0&quot;
-      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-      xsi:schemaLocation=&quot;http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd&quot;&gt;
-    &lt;localRepository&gt;y:\mvnrepo&lt;/localRepository&gt;
-&lt;/settings&gt;
+                        <h1 id="testng設定"><a class="header" href="#testng設定">TestNG設定</a></h1>
+<p>我個人覺得<a href="https://testng.org/doc/">TestNG</a>比Junit好用多了，文件也漂亮多了，更不用像Junit 3-&gt;4-&gt;5 像在擠牙膏一樣，功能慢慢加，
+每次都要重新學，TestNG從一開始就功能強大，學習的CP值比較高(但您若要使用spring-boot這種框架，Junit就具有天生的優勢，不熟的人要用就比較會有困擾)。</p>
+<p>Maven的外掛設定如下：</p>
+<pre><code class="language-xml">&lt;project&gt;
+  &lt;properties&gt;
+    &lt;surefire.version&gt;3.1.2&lt;/surefire.version&gt;
+  &lt;/properties&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.testng&lt;/groupId&gt;
+      &lt;artifactId&gt;testng&lt;/artifactId&gt;
+      &lt;version&gt;7.8.0&lt;/version&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;&lt;!--Maven 的單元測試外掛--&gt;
+        &lt;version&gt;${surefire.version}&lt;/version&gt;
+        &lt;configuration&gt;
+           &lt;systemPropertyVariables&gt;
+             &lt;catalina.home&gt;${project.build.directory}&lt;/catalina.home&gt;&lt;!--這是我Log4J2會用到的系統變數，跟TestNG無關--&gt;
+           &lt;systemPropertyVariables&gt;
+           &lt;parallel&gt;classes&lt;/parallel&gt;&lt;!--以類別的方式進行平行測試，也就是測試Class之間無關聯，可同時開啟測試--&gt;
+           &lt;suiteXmlFiles&gt;&lt;!--TestNG設定檔--&gt;
+             &lt;suiteXmlFile&gt;${project.build.testOutputDirectory}/testng-unit.xml&lt;/suiteXmlFile&gt;
+           &lt;/suiteXmlFiles&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;build&gt;
+&lt;/project&gt;
 </code></pre>
-</li>
-<li>
-<p>設定環境變數 M2_HOME 指到 Maven目錄，並且將 Maven目錄下的 bin加到執行路徑的PATH變數</p>
-</li>
-<li>
-<p>到命令模式下，執行下列指令並確認Maven版本輸出，則安裝完成：</p>
-<pre><code class="language-shell">mvn -version
-Apache Maven 3.9.5
+<p>從上面的設定瞭解到，在 src/test/resources下有一支testng-unit.xml描述測試如何進行</p>
+<pre><code class="language-xml">&lt;!DOCTYPE suite SYSTEM &quot;https://testng.org/testng-1.0.dtd&quot; &gt;
+&lt;suite name=&quot;${project.name}單元測試&quot;  thread-count=&quot;4&quot; skipfailedinvocationcounts=&quot;false&quot; parallel=&quot;classes&quot; verbose=&quot;10&quot;&gt;
+  &lt;test name=&quot;分群測試功能&quot; enabled=&quot;true&quot; enabled=&quot;true&quot;&gt;
+      &lt;parameter name=&quot;contextPath&quot; value=&quot;/${project.artifactId}&quot;/&gt;
+      &lt;parameter name=&quot;http.port&quot; value=&quot;8080&quot;/&gt;
+      &lt;classes&gt;
+          &lt;class name=&quot;you.wanna.testClass.className&quot;&gt;
+            &lt;!--&lt;methods&gt;
+               &lt;include name=&quot;testSomeMethod1&quot; /&gt;
+               &lt;include name=&quot;testSomeMethod2&quot; /&gt;
+            &lt;methods&gt;--&gt;
+          &lt;/class&gt;
+      &lt;/classes&gt;
+  &lt;/test&gt;
+&lt;/suite&gt;
 </code></pre>
-</li>
-</ol>
+<p>&lt;parameter&gt;是一些自訂的參數，可以代入測試類別內。</p>
+<p>&lt;classes&gt;指定那些要進行測試的類別。</p>
+<p>測試類別可能包含一堆要測試的方式，常常我們的測試類別內，包含多個測試，但若測試不通過時，我們可以將某些測試Methos隔離出來，單獨測試並查找出錯誤原因。
+那時就可以在&lt;method&gt;指定那些特別methos進行測試。</p>
+<p>下面特別簡單說明一下TestNG的測試</p>
+<pre><code class="language-java">public class TestSomeUnit {
+    private String contextPath;
+    private int httpPort;
+
+    @BeforeClass //類別執行前必定先執行的段落，可以帶參數，並決少時給預設值
+    public void setup(@Optional(&quot;8080&quot;) int httpPort,
+     @Optional(&quot;/HelloWorld&quot;) String contextPath){
+     this.contextPath = contextPath;
+     this.port = port;
+   }
+
+   @AfterClass
+   public void tearDown() {
+      //類別測試結束後，一定要到此進行善後
+   }
+
+   @Test(description = &quot;登錄&quot;)
+   void testLogin() throws Exception {
+      //進行登錄
+   }
+
+   @Test(description=&quot;查詢個資&quot;,dependsOnMethods=&quot;testLogin&quot;)
+   void testMyprofile() throws Exception{
+      //查詢測試
+   }
+
+   @Test(description=&quot;Other Test&quot;)
+   void testOther(){
+      //其它測試
+   }
+}
+</code></pre>
+<p>上述測試碼中的testMyprofile()，本身包含先後順序(有相依性)，所以需要隔離出來單獨測試時，兩個Methods都一定要被隔離出來。</p>
+<p>另外TestNG也提供檢測一定要發生的錯誤，或者平行測試、多執行緒測試等多種測試功能。</p>
+<p>當進行過單元測試 <code>mvn test</code> 後，我們就可以用瀏覽器開啟下列檔案，查看測試報告。</p>
+<pre><code class="language-text"> ./target/surefire-reports/index.html
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="plugin.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next prefetch" href="firstProject.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="executableJar.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -213,8 +284,11 @@ Apache Maven 3.9.5
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="plugin.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next prefetch" href="firstProject.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="executableJar.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

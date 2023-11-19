@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>建立Maven環境 - Maven 初學者中文教程</title>
+        <title>測試與整合測試 - Maven 初學者中文教程</title>
 
 
         <!-- Custom HTML head -->
@@ -87,7 +87,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><div>Kent's Blog</div></li><li class="spacer"></li><li class="chapter-item expanded "><a href="buildMavenEnv.html" class="active"><strong aria-hidden="true">1.</strong> 建立Maven環境</a></li><li class="chapter-item expanded "><a href="firstProject.html"><strong aria-hidden="true">2.</strong> 建立第一個Project</a></li><li class="chapter-item expanded "><a href="identity.html"><strong aria-hidden="true">3.</strong> 識別管理</a></li><li class="chapter-item expanded "><a href="pomStructor.html"><strong aria-hidden="true">4.</strong> 專案管理</a></li><li class="chapter-item expanded "><a href="archetype.html"><strong aria-hidden="true">5.</strong> 目錄架構</a></li><li class="chapter-item expanded "><a href="plugin.html"><strong aria-hidden="true">6.</strong> 外掛</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="testng.html"><strong aria-hidden="true">6.1.</strong> TestNG設定</a></li><li class="chapter-item "><a href="executableJar.html"><strong aria-hidden="true">6.2.</strong> 建立可執行檔</a></li><li class="chapter-item "><a href="runDirect.html"><strong aria-hidden="true">6.3.</strong> 直接執行程式</a></li></ol></li><li class="chapter-item expanded "><a href="lifeCycle.html"><strong aria-hidden="true">7.</strong> 生命週期</a></li><li class="chapter-item expanded "><a href="profile.html"><strong aria-hidden="true">8.</strong> Profile</a></li><li class="chapter-item expanded "><a href="version.html"><strong aria-hidden="true">9.</strong> 版本管理</a></li><li class="chapter-item expanded "><a href="multimodule.html"><strong aria-hidden="true">10.</strong> 多模組管理</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">11.</strong> 測試與整合測試</a></li><li class="chapter-item expanded "><a href="qualityEnsure.html"><strong aria-hidden="true">12.</strong> 軟體品質保證</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="spotBugs.html"><strong aria-hidden="true">12.1.</strong> SpotBugs</a></li><li class="chapter-item "><a href="pmd.html"><strong aria-hidden="true">12.2.</strong> PMD</a></li><li class="chapter-item "><a href="checkstyle.html"><strong aria-hidden="true">12.3.</strong> Checkstyle</a></li><li class="chapter-item "><a href="jacoco.html"><strong aria-hidden="true">12.4.</strong> JaCoCo</a></li></ol></li><li class="chapter-item expanded "><a href="siteReport.html"><strong aria-hidden="true">13.</strong> Site Report</a></li><li class="chapter-item expanded "><a href="performance.html"><strong aria-hidden="true">14.</strong> 執行效率</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><div>Kent's Blog</div></li><li class="spacer"></li><li class="chapter-item expanded "><a href="buildMavenEnv.html"><strong aria-hidden="true">1.</strong> 建立Maven環境</a></li><li class="chapter-item expanded "><a href="firstProject.html"><strong aria-hidden="true">2.</strong> 建立第一個Project</a></li><li class="chapter-item expanded "><a href="identity.html"><strong aria-hidden="true">3.</strong> 識別管理</a></li><li class="chapter-item expanded "><a href="pomStructor.html"><strong aria-hidden="true">4.</strong> 專案管理</a></li><li class="chapter-item expanded "><a href="archetype.html"><strong aria-hidden="true">5.</strong> 目錄架構</a></li><li class="chapter-item expanded "><a href="plugin.html"><strong aria-hidden="true">6.</strong> 外掛</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="testng.html"><strong aria-hidden="true">6.1.</strong> TestNG設定</a></li><li class="chapter-item "><a href="executableJar.html"><strong aria-hidden="true">6.2.</strong> 建立可執行檔</a></li><li class="chapter-item "><a href="runDirect.html"><strong aria-hidden="true">6.3.</strong> 直接執行程式</a></li></ol></li><li class="chapter-item expanded "><a href="lifeCycle.html"><strong aria-hidden="true">7.</strong> 生命週期</a></li><li class="chapter-item expanded "><a href="profile.html"><strong aria-hidden="true">8.</strong> Profile</a></li><li class="chapter-item expanded "><a href="version.html"><strong aria-hidden="true">9.</strong> 版本管理</a></li><li class="chapter-item expanded "><a href="multimodule.html"><strong aria-hidden="true">10.</strong> 多模組管理</a></li><li class="chapter-item expanded "><a href="testing.html" class="active"><strong aria-hidden="true">11.</strong> 測試與整合測試</a></li><li class="chapter-item expanded "><a href="qualityEnsure.html"><strong aria-hidden="true">12.</strong> 軟體品質保證</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="spotBugs.html"><strong aria-hidden="true">12.1.</strong> SpotBugs</a></li><li class="chapter-item "><a href="pmd.html"><strong aria-hidden="true">12.2.</strong> PMD</a></li><li class="chapter-item "><a href="checkstyle.html"><strong aria-hidden="true">12.3.</strong> Checkstyle</a></li><li class="chapter-item "><a href="jacoco.html"><strong aria-hidden="true">12.4.</strong> JaCoCo</a></li></ol></li><li class="chapter-item expanded "><a href="siteReport.html"><strong aria-hidden="true">13.</strong> Site Report</a></li><li class="chapter-item expanded "><a href="performance.html"><strong aria-hidden="true">14.</strong> 執行效率</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -170,40 +170,70 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="建立maven環境"><a class="header" href="#建立maven環境">建立Maven環境</a></h1>
-<ol start="0">
-<li>
-<p>先把 JDK 裝好。</p>
-</li>
-<li>
-<p>下載<a href="http://maven.apache.org/download.html">Maven</a>後，解開到目錄，例如 x:\maven</p>
-</li>
-<li>
-<p>決定您電腦的函式庫(Maven 把所有Libery集中管理)所在，預設在 用戶目錄下的 ~/.m2，若要變更不同位置，修改 x:\maven\conf\settings.xml的<localRepository>設定到您存放第三方函式庫的目錄，例如: y:\mvnrepo</p>
-<pre><code class="language-xml">&lt;settings xmlns=&quot;http://maven.apache.org/SETTINGS/1.2.0&quot;
-      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-      xsi:schemaLocation=&quot;http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd&quot;&gt;
-    &lt;localRepository&gt;y:\mvnrepo&lt;/localRepository&gt;
-&lt;/settings&gt;
+                        <h1 id="測試與整合測試"><a class="header" href="#測試與整合測試">測試與整合測試</a></h1>
+<p>我們再用下列指令建立一個新專案</p>
+<pre><code class="language-bash">mvn archetype:generate -DarchetypeRepository=local \
+-DarchetypeGroupId=com.github.kentyeh \
+-DarchetypeArtifactId=springJdbiArch -DarchetypeVersion=4.0.1
 </code></pre>
-</li>
-<li>
-<p>設定環境變數 M2_HOME 指到 Maven目錄，並且將 Maven目錄下的 bin加到執行路徑的PATH變數</p>
-</li>
-<li>
-<p>到命令模式下，執行下列指令並確認Maven版本輸出，則安裝完成：</p>
-<pre><code class="language-shell">mvn -version
-Apache Maven 3.9.5
+<p>專案識別與相關問題輸入完成後(後列階假設rtifactI為springJdbi3)，這是一個整合<a href="https://spring.io/projects/spring-framework">Spring</a>,<a href="https://spring.io/projects/spring-security">Spring Security</a> 與 <a href="http://jdbi.org/">JDBI3</a> 的專案.</p>
+<p>這裡必須介紹整體較複雜的兩個Plugins.</p>
+<p>首先是<a href="https://maven.apache.org/surefire/maven-failsafe-plugin/">maven-failsafe-plugin</a>，這個外掛與之前介紹過的<a href="https://maven.apache.org/surefire/maven-surefire-plugin/">maven-surefire-plugin</a>兩者互為表裡(所以兩者的版本號會保持一致)，<code>maven-surefire-plugin</code>著重在單元測試，而<code>maven-failsafe-plugin</code>注重在整合測試，顧名思義，單元測試針對每個函式進行輸入與輸出的測試，而整合測試則必須考慮測試標的的前後關係(如修改密碼前必須先登錄帳號)。</p>
+<p><code>maven-failsafe-plugin</code>最重要的Goal有兩個，一個是<code>integration-test</code> ，另一個就是<code>verify</code>，兩個Goal皆對綁定到同名的生命周期。</p>
+<p>此專案是一個Web程式，依之前介紹過的<a href="runDirect.html">直接執行程式</a>，可以直接執行。</p>
+<pre><code class="language-bash">mvn jetty:run
 </code></pre>
-</li>
-</ol>
+<p>由於我一貫性使用<a href="https://testng.org/">TestNG</a>，所以設定檔指定了測試程式<code>TestIntegration.java</code></p>
+<pre><code class="language-xml">&lt;plugin&gt;
+  &lt;artifactId&gt;maven-failsafe-plugin&lt;/artifactId&gt;
+  &lt;version&gt;${surefire.version}&lt;/version&gt;
+  &lt;configuration&gt;
+    &lt;suiteXmlFiles&gt;
+      &lt;suiteXmlFile&gt;${project.build.testOutputDirectory}/testng-integration.xml&lt;/suiteXmlFile&gt;
+    &lt;/suiteXmlFiles&gt;
+  &lt;/configuration&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>進行整合測試之前，我們應該先將Web Server上起來，而在測試程式完成後則應把Web Server關閉，所以我們必須將<code>jetty-maven-plugin</code>的啟動與關閉的Goal綁定到生命週期的<code>pre-integration-test</code>與<code>post-integration-test</code>。</p>
+<pre><code class="language-xml">&lt;plugin&gt;
+  &lt;groupId&gt;org.eclipse.jetty&lt;/groupId&gt;
+  &lt;artifactId&gt;jetty-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;11.0.17&lt;/version&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;
+      &lt;id&gt;start-jetty&lt;/id&gt;
+      &lt;phase&gt;pre-integration-test&lt;/phase&gt;&lt;!--整合測試前--&gt;
+      &lt;goals&gt;&lt;goal&gt;start&lt;/goal&gt;&lt;/goals&gt;&lt;!--啟動Jetty--&gt;
+    &lt;/execution&gt;
+    &lt;execution&gt;
+      &lt;id&gt;stop-jetty&lt;/id&gt;
+      &lt;phase&gt;post-integration-test&lt;/phase&gt;&lt;!--整合測試後--&gt;
+      &lt;goals&gt;&lt;goal&gt;stop&lt;/goal&gt;&lt;/goals&gt;&lt;!--關閉Jetty--&gt;
+    &lt;/execution&gt;
+  &lt;/executions&gt;
+&lt;/plugin&gt;
+</code></pre>
+<p>在整合測試期間，整個Web是處於可運作狀態，測試程式得以對Web進行測試。</p>
+<p>在此程式，使用<a href="https://htmlunit.sourceforge.io/">HtmlUnit</a>進行Web測試。</p>
+<p><code>HtmlUnit</code>被稱作為 <code>Headless Broser</code>，也就是看不見的瀏覽器，但幾乎實作了完整的瀏覽器功能，重點是我們可以用程式操縱這個看不見的瀏覽器。可以想見，她很適合來寫爬蟲程式。</p>
+<p>但<code>HtmlUnit</code>的缺點也是看不見，所以很難想像，畫面執行是長什麼樣子，為了彌補這個缺陷，我通常建立在您常用的瀏覽器加裝<a href="https://www.selenium.dev/selenium-ide/">Selenium IDE</a>這個外掛(<a href="https://addons.mozilla.org/en-GB/firefox/addon/selenium-ide/">火狐</a>、<a href="https://chrome.google.com/webstore/detail/selenium-ide/mooikfkahbdckldjjndioackbalphokd">孔龍妹</a>與<a href="https://microsoftedge.microsoft.com/addons/detail/selenium-ide/ajdpfmkffanmkhejnopjppegokpogffp">Edge</a>)，可記錄瀏覽器執行過程並重播(當然測試，免不了要自行編寫一些Assertion)。</p>
+<p><code>Selenium IDE</code>工具其實還支持將她的測試腳本匯出為程式碼(<a href="https://search.maven.org/artifact/org.seleniumhq.selenium/selenium-java">Java</a>)，讓程式碼直接操縱瀏覽器直接進行整合測試，然後直接在程式裡直接Assertion，我不建議這麼作(雖然還蠻炫的)，因為這樣做的缺點也很明顯-綁特定的瀏覽器，在多人開發環境下是無法保證大家都預設用同款瀏覽器。</p>
+<p>所以我備們直接執行下列指令進行整點測試與確認吧</p>
+<pre><code class="language-bash">mvn verify
+</code></pre>
+<p>或者只要進行整合測試</p>
+<pre><code class="language-bash">mvn integration-test
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="multimodule.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next prefetch" href="firstProject.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="qualityEnsure.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -213,8 +243,11 @@ Apache Maven 3.9.5
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="multimodule.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next prefetch" href="firstProject.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="qualityEnsure.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

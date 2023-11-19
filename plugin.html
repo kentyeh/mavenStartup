@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>建立Maven環境 - Maven 初學者中文教程</title>
+        <title>外掛 - Maven 初學者中文教程</title>
 
 
         <!-- Custom HTML head -->
@@ -87,7 +87,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><div>Kent's Blog</div></li><li class="spacer"></li><li class="chapter-item expanded "><a href="buildMavenEnv.html" class="active"><strong aria-hidden="true">1.</strong> 建立Maven環境</a></li><li class="chapter-item expanded "><a href="firstProject.html"><strong aria-hidden="true">2.</strong> 建立第一個Project</a></li><li class="chapter-item expanded "><a href="identity.html"><strong aria-hidden="true">3.</strong> 識別管理</a></li><li class="chapter-item expanded "><a href="pomStructor.html"><strong aria-hidden="true">4.</strong> 專案管理</a></li><li class="chapter-item expanded "><a href="archetype.html"><strong aria-hidden="true">5.</strong> 目錄架構</a></li><li class="chapter-item expanded "><a href="plugin.html"><strong aria-hidden="true">6.</strong> 外掛</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="testng.html"><strong aria-hidden="true">6.1.</strong> TestNG設定</a></li><li class="chapter-item "><a href="executableJar.html"><strong aria-hidden="true">6.2.</strong> 建立可執行檔</a></li><li class="chapter-item "><a href="runDirect.html"><strong aria-hidden="true">6.3.</strong> 直接執行程式</a></li></ol></li><li class="chapter-item expanded "><a href="lifeCycle.html"><strong aria-hidden="true">7.</strong> 生命週期</a></li><li class="chapter-item expanded "><a href="profile.html"><strong aria-hidden="true">8.</strong> Profile</a></li><li class="chapter-item expanded "><a href="version.html"><strong aria-hidden="true">9.</strong> 版本管理</a></li><li class="chapter-item expanded "><a href="multimodule.html"><strong aria-hidden="true">10.</strong> 多模組管理</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">11.</strong> 測試與整合測試</a></li><li class="chapter-item expanded "><a href="qualityEnsure.html"><strong aria-hidden="true">12.</strong> 軟體品質保證</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="spotBugs.html"><strong aria-hidden="true">12.1.</strong> SpotBugs</a></li><li class="chapter-item "><a href="pmd.html"><strong aria-hidden="true">12.2.</strong> PMD</a></li><li class="chapter-item "><a href="checkstyle.html"><strong aria-hidden="true">12.3.</strong> Checkstyle</a></li><li class="chapter-item "><a href="jacoco.html"><strong aria-hidden="true">12.4.</strong> JaCoCo</a></li></ol></li><li class="chapter-item expanded "><a href="siteReport.html"><strong aria-hidden="true">13.</strong> Site Report</a></li><li class="chapter-item expanded "><a href="performance.html"><strong aria-hidden="true">14.</strong> 執行效率</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><div>Kent's Blog</div></li><li class="spacer"></li><li class="chapter-item expanded "><a href="buildMavenEnv.html"><strong aria-hidden="true">1.</strong> 建立Maven環境</a></li><li class="chapter-item expanded "><a href="firstProject.html"><strong aria-hidden="true">2.</strong> 建立第一個Project</a></li><li class="chapter-item expanded "><a href="identity.html"><strong aria-hidden="true">3.</strong> 識別管理</a></li><li class="chapter-item expanded "><a href="pomStructor.html"><strong aria-hidden="true">4.</strong> 專案管理</a></li><li class="chapter-item expanded "><a href="archetype.html"><strong aria-hidden="true">5.</strong> 目錄架構</a></li><li class="chapter-item expanded "><a href="plugin.html" class="active"><strong aria-hidden="true">6.</strong> 外掛</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="testng.html"><strong aria-hidden="true">6.1.</strong> TestNG設定</a></li><li class="chapter-item "><a href="executableJar.html"><strong aria-hidden="true">6.2.</strong> 建立可執行檔</a></li><li class="chapter-item "><a href="runDirect.html"><strong aria-hidden="true">6.3.</strong> 直接執行程式</a></li></ol></li><li class="chapter-item expanded "><a href="lifeCycle.html"><strong aria-hidden="true">7.</strong> 生命週期</a></li><li class="chapter-item expanded "><a href="profile.html"><strong aria-hidden="true">8.</strong> Profile</a></li><li class="chapter-item expanded "><a href="version.html"><strong aria-hidden="true">9.</strong> 版本管理</a></li><li class="chapter-item expanded "><a href="multimodule.html"><strong aria-hidden="true">10.</strong> 多模組管理</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">11.</strong> 測試與整合測試</a></li><li class="chapter-item expanded "><a href="qualityEnsure.html"><strong aria-hidden="true">12.</strong> 軟體品質保證</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="spotBugs.html"><strong aria-hidden="true">12.1.</strong> SpotBugs</a></li><li class="chapter-item "><a href="pmd.html"><strong aria-hidden="true">12.2.</strong> PMD</a></li><li class="chapter-item "><a href="checkstyle.html"><strong aria-hidden="true">12.3.</strong> Checkstyle</a></li><li class="chapter-item "><a href="jacoco.html"><strong aria-hidden="true">12.4.</strong> JaCoCo</a></li></ol></li><li class="chapter-item expanded "><a href="siteReport.html"><strong aria-hidden="true">13.</strong> Site Report</a></li><li class="chapter-item expanded "><a href="performance.html"><strong aria-hidden="true">14.</strong> 執行效率</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -170,40 +170,37 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="建立maven環境"><a class="header" href="#建立maven環境">建立Maven環境</a></h1>
-<ol start="0">
-<li>
-<p>先把 JDK 裝好。</p>
-</li>
-<li>
-<p>下載<a href="http://maven.apache.org/download.html">Maven</a>後，解開到目錄，例如 x:\maven</p>
-</li>
-<li>
-<p>決定您電腦的函式庫(Maven 把所有Libery集中管理)所在，預設在 用戶目錄下的 ~/.m2，若要變更不同位置，修改 x:\maven\conf\settings.xml的<localRepository>設定到您存放第三方函式庫的目錄，例如: y:\mvnrepo</p>
-<pre><code class="language-xml">&lt;settings xmlns=&quot;http://maven.apache.org/SETTINGS/1.2.0&quot;
-      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-      xsi:schemaLocation=&quot;http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd&quot;&gt;
-    &lt;localRepository&gt;y:\mvnrepo&lt;/localRepository&gt;
-&lt;/settings&gt;
+                        <h1 id="外掛"><a class="header" href="#外掛">外掛</a></h1>
+<p>一開始的時候，我們執行 &quot;mvn archetype:generate&quot; 建立專案。</p>
+<p>mvn 後面接的指令 叫 goal由 &quot;前置字:作業標的&quot; 表示要執行的作業。</p>
+<p>這些執業作業(命令)是由所謂的plugin(外掛)所提供，plugin是一種專供 Maven 用於建置專案所使用的Library，同一個 plugin 使用同一前置字；</p>
+<p>Maven本身<a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Built-in_Lifecycle_Bindings">早已內建</a>許許多多的goal的定義，當Maven執行特定的 goal時，缺少的Plugin，Maven就會自動去Repository下載相關的檔案。</p>
+<p>Maven 的指令可以串接，例如以下指令</p>
+<pre><code class="language-shell">mvn clean package javadoc:javadoc
 </code></pre>
-</li>
-<li>
-<p>設定環境變數 M2_HOME 指到 Maven目錄，並且將 Maven目錄下的 bin加到執行路徑的PATH變數</p>
-</li>
-<li>
-<p>到命令模式下，執行下列指令並確認Maven版本輸出，則安裝完成：</p>
-<pre><code class="language-shell">mvn -version
-Apache Maven 3.9.5
+<p>很直白，清除已有之建置，然後打包再產出Java API文件。</p>
+<p>上述的 <strong>clean</strong>、<strong>package</strong>(打包）都很容易理解，可是為何又出現了 <strong>javadoc:javadoc</strong> ?</p>
+<p>前面已經說了，Maven本身<a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Built-in_Lifecycle_Bindings">早已內建</a>許許多多特殊的goal，換個說法就是：每個釋出Maven版本，本身已經關聯了許多的外掛，當您執行 <code>mvn compile</code> 時，即使pom.xml沒有宣告<strong>maven-compiler-plugin</strong>, 只要設定好相關的<strong>property</strong>，Maven也會自動正確地執行相關版本的<strong>maven-compiler-plugin</strong>外掛(不一定是最新的版本)。</p>
+<p>同樣的，當執行<code>mvn clean</code>時，也必定有一版相關的<a href="https://maven.apache.org/plugins/maven-clean-plugin/"><strong>maven-clean-plugin</strong></a>被叫用。只不過通常用來清除<strong>target</strong>目錄外，很少有額外的目錄需要清除，所以也很少看到有人特別針對這個外掛做設定。</p>
+<p>舅多媽爹!<code>mvn clean</code>或<code>mvn compile</code>這兩個goal都不是&quot;前置字:作業標的&quot;的形式啊!</p>
+<p>那是因為上述的goal是屬於生命周期(Life Cycle，另外在生命週期章節中解說)之Phase(階段)的一部分，所以<strong>前置字</strong>被省略了，當然，您要執行 <code>mvn clean:clean</code>也不會有人反對。</p>
+<p>也許有人會問，那我自行開發的外掛要怎麼執行?</p>
+<p>Maven也提供了如何解析<a href="https://maven.apache.org/guides/introduction/introduction-to-plugin-prefix-mapping.html">前置字</a>的規則，
+要不然就只能用 <code>mvn 識別管理:版本:作業標的</code>的方式來執行外掛。</p>
+<p>例如上述的<strong>javadoc:javadoc</strong>可以用下列方式執行(我想應該很少有人有特殊的需求需要自行開發外掛)：</p>
+<pre><code class="language-shell">mvn org.apache.maven.plugins:maven-javadoc-plugin:3.6.0:javadoc
 </code></pre>
-</li>
-</ol>
+<p>再來介紹一些常用的外掛。</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="archetype.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next prefetch" href="firstProject.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="testng.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -213,8 +210,11 @@ Apache Maven 3.9.5
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="archetype.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next prefetch" href="firstProject.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="testng.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

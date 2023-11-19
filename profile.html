@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html lang="zh-Hans-TW" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Profile - Maven 初學者中文教程</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><div>Kent's Blog</div></li><li class="spacer"></li><li class="chapter-item expanded "><a href="buildMavenEnv.html"><strong aria-hidden="true">1.</strong> 建立Maven環境</a></li><li class="chapter-item expanded "><a href="firstProject.html"><strong aria-hidden="true">2.</strong> 建立第一個Project</a></li><li class="chapter-item expanded "><a href="identity.html"><strong aria-hidden="true">3.</strong> 識別管理</a></li><li class="chapter-item expanded "><a href="pomStructor.html"><strong aria-hidden="true">4.</strong> 專案管理</a></li><li class="chapter-item expanded "><a href="archetype.html"><strong aria-hidden="true">5.</strong> 目錄架構</a></li><li class="chapter-item expanded "><a href="plugin.html"><strong aria-hidden="true">6.</strong> 外掛</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="testng.html"><strong aria-hidden="true">6.1.</strong> TestNG設定</a></li><li class="chapter-item "><a href="executableJar.html"><strong aria-hidden="true">6.2.</strong> 建立可執行檔</a></li><li class="chapter-item "><a href="runDirect.html"><strong aria-hidden="true">6.3.</strong> 直接執行程式</a></li></ol></li><li class="chapter-item expanded "><a href="lifeCycle.html"><strong aria-hidden="true">7.</strong> 生命週期</a></li><li class="chapter-item expanded "><a href="profile.html" class="active"><strong aria-hidden="true">8.</strong> Profile</a></li><li class="chapter-item expanded "><a href="version.html"><strong aria-hidden="true">9.</strong> 版本管理</a></li><li class="chapter-item expanded "><a href="multimodule.html"><strong aria-hidden="true">10.</strong> 多模組管理</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">11.</strong> 測試與整合測試</a></li><li class="chapter-item expanded "><a href="qualityEnsure.html"><strong aria-hidden="true">12.</strong> 軟體品質保證</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="spotBugs.html"><strong aria-hidden="true">12.1.</strong> SpotBugs</a></li><li class="chapter-item "><a href="pmd.html"><strong aria-hidden="true">12.2.</strong> PMD</a></li><li class="chapter-item "><a href="checkstyle.html"><strong aria-hidden="true">12.3.</strong> Checkstyle</a></li><li class="chapter-item "><a href="jacoco.html"><strong aria-hidden="true">12.4.</strong> JaCoCo</a></li></ol></li><li class="chapter-item expanded "><a href="siteReport.html"><strong aria-hidden="true">13.</strong> Site Report</a></li><li class="chapter-item expanded "><a href="performance.html"><strong aria-hidden="true">14.</strong> 執行效率</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Maven 初學者中文教程</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/kentyeh/mavenStartup" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="profile"><a class="header" href="#profile">Profile</a></h1>
+<p>有時候我們必須依環境不同，而有不同的作法，所以可以用Profile將各個Plugin作區別設定， 然後以 &quot;mvn -P設定&quot; 來決定要如何執行特定的Plugin。 例如在Andord開發的時候，用模擬器測試的時候，為加快速度，根本不必考慮<a href="https://developer.android.com/studio/publish/app-signing?hl=zh-tw">簽署</a>apk的問題，但是發佈App時則一定要簽署才行。 所以我們設定如下:</p>
+<pre><code class="language-xml">&lt;project ...&gt;
+    &lt;profiles&gt;
+        &lt;profile&gt;
+            &lt;id&gt;sign&lt;/id&gt;&lt;!--我們自行命名的Profile--&gt;
+            &lt;build&gt;
+                &lt;plugins&gt;
+                    &lt;plugin&gt;
+                        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                        &lt;artifactId&gt;maven-jarsigner-plugin&lt;/artifactId&gt;
+                        &lt;version&gt;3.0.0&lt;/version&gt;
+                        &lt;executions&gt;
+                            &lt;execution&gt;
+                                &lt;id&gt;signing&lt;/id&gt;&lt;!--為執行的作業命名--&gt;
+                                &lt;goals&gt;
+                                    &lt;goal&gt;sign&lt;/goal&gt;&lt;!--我們要執行的Goal--&gt;
+                                &lt;/goals&gt;
+                                &lt;phase&gt;package&lt;/phase&gt;&lt;!--在Package的Phase執行這個Goal--&gt;
+                                &lt;inherited&gt;true&lt;/inherited&gt;
+                                &lt;configuration&gt;
+                                    &lt;archiveDirectory&gt;&lt;/archiveDirectory&gt;
+                                    &lt;includes&gt;
+                                        &lt;include&gt;${project.build.directory}/*.apk&lt;/include&gt;&lt;!--要簽署的apk--&gt;
+                                    &lt;/includes&gt;
+                                    &lt;keystore&gt;${somewhare}/keystorefile&lt;/keystore&gt;&lt;!--key store檔案的所在路徑--&gt;
+                                    &lt;storepass&gt;key-store_password&lt;/storepass&gt;&lt;!--Key sotre 的密碼---&gt;
+                                    &lt;!--keypass&gt;密碼&lt;/keypass --&gt; &lt;!-如果使用的key有密碼的話---&gt;
+                                    &lt;alias&gt;key's alias name&lt;/alias&gt;&lt;!--加簽所使用的 alias--&gt;
+                                &lt;/configuration&gt;
+                            &lt;/execution&gt;
+                        &lt;/executions&gt;
+                    &lt;/plugin&gt;
+                &lt;/plugins&gt;
+            &lt;/build&gt;
+        &lt;/profile&gt;
+    &lt;/profiles&gt;
+&lt;/project&gt;
+</code></pre>
+<p>所以最後要建立發佈的App時，只要執行 &quot;mvn -Psign install &quot;就可以為建立的apk檔案加簽了。</p>
+<p>另外的例子如Web程式在開發時用的是Window的環境，而發佈主機則是Linux環境，因為我們須要在環境內放一個system.properties 來為不同的環境設定不同的參數， 例如我們在專案下開了兩個目錄TomcatEnv?與JbossEnv?，裡面各放了一個system.properties，然後打打包專案時，才指定要用那一個檔案。</p>
+<pre><code class="language-xml">&lt;project ...&gt;
+    &lt;profiles&gt;
+        &lt;profile&gt;
+        &lt;id&gt;product&lt;/id&gt;&lt;!--我們自行命名的Profile--&gt;
+        &lt;activation&gt;
+            &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+        &lt;/activation&gt;
+        &lt;build&gt;
+          &lt;plugins&gt;
+            &lt;plugin&gt;
+              &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+              &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+              &lt;version&gt;3.4.0&lt;/version&gt;
+              &lt;configuration&gt;
+                &lt;webResources&gt;
+                  &lt;resource&gt;
+                    &lt;directory&gt;productEnv&lt;/directory&gt;&lt;!--引用的資源目錄--&gt;
+                    &lt;targetPath&gt;WEB-INF/classes&lt;/targetPath&gt;&lt;!--打包時拷貝的目的目錄--&gt;
+                  &lt;/resource&gt;
+                &lt;/webResources&gt;
+              &lt;/configuration&gt;
+            &lt;/plugin&gt;
+          &lt;/plugins&gt;
+        &lt;/build&gt;
+        &lt;/profile&gt;
+        &lt;profile&gt;
+        &lt;id&gt;develop&lt;/id&gt;&lt;!--我們自行命名的Profile--&gt;
+        &lt;build&gt;
+          &lt;plugins&gt;
+            &lt;plugin&gt;
+              &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+              &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
+              &lt;version&gt;3.4.0&lt;/version&gt;
+              &lt;configuration&gt;
+                &lt;webResources&gt;
+                  &lt;resource&gt;
+                    &lt;directory&gt;developEnv&lt;/directory&gt;&lt;!--引用的資源目錄--&gt;
+                    &lt;targetPath&gt;WEB-INF/classes&lt;/targetPath&gt;&lt;!--打包時拷貝的目的目錄--&gt;
+                  &lt;/resource&gt;
+                &lt;/webResources&gt;
+              &lt;/configuration&gt;
+            &lt;/plugin&gt;
+          &lt;/plugins&gt;
+        &lt;/build&gt;
+        &lt;/profile&gt;
+    &lt;/profiles&gt;
+&lt;/project&gt;
+</code></pre>
+<p>上述只是示範，通常為了達成同樣的目的，我們只會用Maven本身的過濾功能(參見之前的<a href="archetype.html">目錄架構</a>):</p>
+<pre><code class="language-xml">&lt;project&gt;
+  &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;product&lt;/id&gt;
+      &lt;activation&gt;
+        &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+      &lt;/activation&gt;
+      &lt;properties&gt;
+        &lt;spring.profiles.active&gt;product&lt;/spring.profiles.active&gt;&lt;!--配合Spring的@Profile--&gt;
+        &lt;other4filter&gt;d:\attach\&lt;other4filter&gt;
+      &lt;/properties&gt;
+    &lt;/profile&gt;
+    &lt;profile&gt;
+      &lt;id&gt;develop&lt;/id&gt;
+      &lt;properties&gt;
+        &lt;spring.profiles.active&gt;develop&lt;/spring.profiles.active&gt;
+        &lt;other4filter&gt;${project.build.directory}/attach/&lt;other4filter&gt;
+      &lt;/properties&gt;
+    &lt;/profile&gt;
+  &lt;/profiles&gt;
+  &lt;build&gt;
+      &lt;resources&gt;
+        &lt;resource&gt;
+          &lt;directory&gt;${project.basedir}/src/main/resources&lt;/directory&gt;
+          &lt;filtering&gt;true&lt;/filtering&gt;
+        &lt;/resource&gt;
+      &lt;&lt;/resources&gt;
+  &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+<p>所以當我們在開發環境時，執行Maven 總要加上 <code>mvn -Pdevelop xxx</code>，而要打包正式佈署的程式時，只要執行 <code>mvn package</code> 就可以了。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="lifeCycle.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="version.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="lifeCycle.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="version.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
