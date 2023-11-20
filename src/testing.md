@@ -4,7 +4,7 @@
 ```bash
 mvn archetype:generate -DarchetypeRepository=local \
 -DarchetypeGroupId=com.github.kentyeh \
--DarchetypeArtifactId=springJdbiArch -DarchetypeVersion=4.0.1
+-DarchetypeArtifactId=springJdbiArch -DarchetypeVersion=4.0.2
 ```
 專案識別與相關問題輸入完成後(後列階假設rtifactI為springJdbi3)，這是一個整合[Spring](https://spring.io/projects/spring-framework),[Spring Security](https://spring.io/projects/spring-security) 與 [JDBI3](http://jdbi.org/) 的專案.
 
