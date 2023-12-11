@@ -8,7 +8,7 @@ Maven的外掛設定如下：
 ```xml
 <project>
   <properties>
-    <surefire.version>3.1.2</surefire.version>
+    <surefire.version>3.2.2</surefire.version>
   </properties>
   <dependencies>
     <dependency>

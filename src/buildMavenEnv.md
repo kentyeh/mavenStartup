@@ -19,6 +19,6 @@
 
     ```shell
     mvn -version
-    Apache Maven 3.9.5
+    Apache Maven 3.9.6
     ```
 

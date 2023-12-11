@@ -26,7 +26,7 @@ Maven的管理設定主要靠Pom.xml進行，打開剛才建立的專案設定�
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <!--也可以自行設定變數-->
-    <surefire.version>3.1.2</surefire.version>
+    <surefire.version>3.2.2</surefire.version>
   </properties>
 
   <!--設定引用函式庫-->

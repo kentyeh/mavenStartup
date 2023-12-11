@@ -30,7 +30,7 @@
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-project-info-reports-plugin</artifactId>
-      <version>3.4.5</version>
+      <version>3.5.0</version>
       <configuration>
         <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
       </configuration>
@@ -85,7 +85,7 @@
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-javadoc-plugin</artifactId>
-      <version>3.6.2</version>
+      <version>3.6.3</version>
       <configuration>
         <verbose>false</verbose>
         <locale>zh_TW</locale>

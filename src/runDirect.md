@@ -20,7 +20,7 @@
 <plugin>
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>exec-maven-plugin</artifactId>
-  <version>3.1.0</version>
+  <version>3.1.1</version>
   <configuration>
     <cleanupDaemonThreads>false</cleanupDaemonThreads>
     <systemProperties>
@@ -40,7 +40,7 @@
 <plugin>
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>exec-maven-plugin</artifactId>
-  <version>3.1.0</version>
+  <version>3.1.1</version>
   <configuration>
     <executable>java</executable>
     <arguments>
@@ -63,7 +63,7 @@
   <plugin>
     <groupId>org.eclipse.jetty</groupId>
     <artifactId>jetty-maven-plugin</artifactId>
-    <version>11.0.17</version><!--如果是JDK8請改用9.x版-->
+    <version>11.0.18</version><!--如果是JDK8請改用9.x版-->
     <configuration>
       <webApp>
         <!--下行若不加，則會以 Root 執行-->

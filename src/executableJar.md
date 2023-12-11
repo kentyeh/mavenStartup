@@ -39,7 +39,16 @@
   <plugin>
     <groupId>org.apache.maven.plugins</groupId>
     <artifactId>maven-assembly-plugin</artifactId>
-    <version>3.5.0</version>
+    <version>3.6.0</version>
+    <executions>
+      <execution>
+        <id>make-assembly</id>
+        <phase>package</phase>
+        <goals>
+          <goal>single</goal>
+        </goals>
+      </execution>
+    </executions>
     <configuration>
       <archive>
         <manifest>

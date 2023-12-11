@@ -48,7 +48,7 @@ mvn compile exec:java
 <plugin>
   <groupId>org.codehaus.mojo</groupId>
   <artifactId>exec-maven-plugin</artifactId>
-  <version>3.1.0</version>
+  <version>3.1.1</version>
   <executions>
     <execution><!--設定Goal的執行方式-->
       <phase>test</phase><!--在test pahse時執行下列的Goal-->
@@ -88,7 +88,7 @@ mvn compile exec:java
 <plugin>
   <groupId>org.eclipse.jetty</groupId>
   <artifactId>jetty-maven-plugin</artifactId>
-  <version>11.0.17</version>
+  <version>11.0.18</version>
   <executions>
     <execution>
       <id>start-jetty</id>

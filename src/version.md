@@ -15,7 +15,7 @@ mvn dependency:tree
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>6.0.13</version>
+      <version>6.1.1</version>
     </dependency>
     <dependency>
       <groupId>org.jdbi</groupId>
