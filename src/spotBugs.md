@@ -9,7 +9,7 @@
     <plugin>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-maven-plugin</artifactId>
-      <version>4.8.2.0</version>
+      <version>4.8.3.0</version>
       <executions>
         <execution>
           <id>spotbugs</id>
@@ -56,7 +56,7 @@ mvn compile spotbugs:check spotbugs:gui
     <plugins>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-maven-plugin</artifactId>
-      <version>4.8.2.0</version>
+      <version>4.8.3.0</version>
       <configuration>
         <failOnError>false</failOnError>
         <xmlOutputDirectory>${project.build.directory}/site</xmlOutputDirectory>

@@ -88,7 +88,7 @@ mvn compile exec:java
 <plugin>
   <groupId>org.eclipse.jetty</groupId>
   <artifactId>jetty-maven-plugin</artifactId>
-  <version>11.0.18</version>
+  <version>11.0.19</version>
   <executions>
     <execution>
       <id>start-jetty</id>

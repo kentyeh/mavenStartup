@@ -87,6 +87,7 @@ Project目錄
 | ${project.groupId} | 就是 pom.xml &lt;groupId&gt;所指定的名稱 |
 | ${project.build.finalName} | Project的打包名稱 |
 | ${java.home} | Java安裝目錄 |
+| ${env.變數名} | 參考系統變數，例如有JAVA_HOME的系統變數，就可以直接參考${env.JAVA_HOME} |
 
 另外一種就是各種外掛的定義變數。
 
@@ -112,6 +113,14 @@ Project目錄
     <display-name>${project.name}</display-name>
 </web-app>
 ```
+註:若POM.xml內有引用spring-boot-maven-plugin，因為`application.properties`或`application.yml`也使用`${…}`，所以替代符被變更為`@…@`, 所以web.xml應該是
+
+```xml
+<web-app version="6.0">
+    <display-name>@project.name@</display-name>
+</web-app>
+```
+
 希望建置War檔時Maven能夠將之替換為專案名稱，但又為了建置時不要這個檔案被放到/classes裡面，所以我把這個檔放在 專案目錄/src/test/resources 內(這個目錄不會被打包)。
 然後Maven進行資源處理時會被拷貝到 target/test-classes/ 下，但是一般正常的web.xml應該在WEB-INF下才對，所以我必須在POM內告訴打包war的外掛，正確的
 web.xml所在。

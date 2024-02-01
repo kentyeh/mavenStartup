@@ -34,7 +34,7 @@ Maven的管理設定主要靠Pom.xml進行，打開剛才建立的專案設定�
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.8.0</version>
+      <version>7.9.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

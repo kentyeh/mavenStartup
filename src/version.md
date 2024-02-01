@@ -15,12 +15,12 @@ mvn dependency:tree
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>6.1.1</version>
+      <version>6.1.3</version>
     </dependency>
     <dependency>
       <groupId>org.jdbi</groupId>
       <artifactId>jdbi3-spring5</artifactId>
-      <version>3.41.3</version>
+      <version>3.43.0</version>
     </dependency>
   <dependencies>
 </project>
@@ -39,18 +39,19 @@ mvn dependency:tree
 ```
 仔細看，相依關係混雜著spring 5版與6版，最新版的Maven已經比舊版聰明許多，舊版會看到兩個不同的spring-core版本。
 所以我們只要把pom.xml改成如下：
+
 ```xml
 <project ...>
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>6.0.13</version>
+      <version>6.1.3</version>
     </dependency>
     <dependency>
       <groupId>org.jdbi</groupId>
       <artifactId>jdbi3-spring5</artifactId>
-      <version>3.41.3</version>
+      <version>3.43.0</version>
     </dependency>
   </dependencies>
 </project>
@@ -76,7 +77,7 @@ mvn dependency:tree
     <dependency>
       <groupId>org.jdbi</groupId>
       <artifactId>jdbi3-spring5</artifactId>
-      <version>3.41.3</version>
+      <version>3.43.0</version>
         <exclusions>
           <exclusion>
             <groupId>org.springframework</groupId>
@@ -99,7 +100,7 @@ mvn dependency:tree
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>6.0.13</version>
+      <version>6.1.3</version>
     </dependency>
   </dependencies>
 </project>

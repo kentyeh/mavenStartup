@@ -59,7 +59,7 @@
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-jxr-plugin</artifactId>
-      <version>3.3.1</version>
+      <version>3.3.2</version>
       <configuration>
         <aggregate>true</aggregate>
       </configuration>
@@ -67,7 +67,7 @@
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-surefire-report-plugin</artifactId>
-      <version>3.2.2</version>
+      <version>3.2.5</version>
       <configuration>
         <junitReport>true</junitReport>
         <exportAll>true</exportAll>
