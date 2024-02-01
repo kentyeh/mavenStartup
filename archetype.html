@@ -241,6 +241,7 @@
 <tr><td>${project.groupId}</td><td>就是 pom.xml &lt;groupId&gt;所指定的名稱</td></tr>
 <tr><td>${project.build.finalName}</td><td>Project的打包名稱</td></tr>
 <tr><td>${java.home}</td><td>Java安裝目錄</td></tr>
+<tr><td>${env.變數名}</td><td>參考系統變數，例如有JAVA_HOME的系統變數，就可以直接參考${env.JAVA_HOME}</td></tr>
 </tbody></table>
 </div>
 <p>另外一種就是各種外掛的定義變數。</p>
@@ -255,6 +256,11 @@
 <p>我的web.xml有段設定如下：</p>
 <pre><code class="language-xml">&lt;web-app version=&quot;6.0&quot;&gt;
     &lt;display-name&gt;${project.name}&lt;/display-name&gt;
+&lt;/web-app&gt;
+</code></pre>
+<p>註:若POM.xml內有引用spring-boot-maven-plugin，因為<code>application.properties</code>或<code>application.yml</code>也使用<code>${…}</code>，所以替代符被變更為<code>@…@</code>, 所以web.xml應該是</p>
+<pre><code class="language-xml">&lt;web-app version=&quot;6.0&quot;&gt;
+    &lt;display-name&gt;@project.name@&lt;/display-name&gt;
 &lt;/web-app&gt;
 </code></pre>
 <p>希望建置War檔時Maven能夠將之替換為專案名稱，但又為了建置時不要這個檔案被放到/classes裡面，所以我把這個檔放在 專案目錄/src/test/resources 內(這個目錄不會被打包)。
