@@ -63,7 +63,7 @@
   <plugin>
     <groupId>org.eclipse.jetty</groupId>
     <artifactId>jetty-maven-plugin</artifactId>
-    <version>11.0.19</version><!--如果是JDK8請改用9.x版-->
+    <version>11.0.20</version><!--如果是JDK8請改用9.x版-->
     <configuration>
       <webApp>
         <!--下行若不加，則會以 Root 執行-->

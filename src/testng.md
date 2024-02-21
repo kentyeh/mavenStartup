@@ -8,13 +8,13 @@ Maven的外掛設定如下：
 ```xml
 <project>
   <properties>
-    <surefire.version>3.2.2</surefire.version>
+    <surefire.version>3.2.5</surefire.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.8.0</version>
+      <version>7.9.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

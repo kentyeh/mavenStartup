@@ -18,6 +18,7 @@
 - [多模組管理](multimodule.md)
 - [測試與整合測試](testing.md)
 - [軟體品質保證](qualityEnsure.md)
+    - [dependency-check-maven](dependency-check-maven.md)
     - [SpotBugs](spotBugs.md)
     - [PMD](pmd.md)
     - [Checkstyle](checkstyle.md)
